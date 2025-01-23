@@ -1,0 +1,36 @@
+prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
+prefix log: <http://www.w3.org/2000/10/swap/log#>
+prefix string: <http://www.w3.org/2000/10/swap/string#>
+PREFIX tuner: <https://api-tuner.described.at/>
+
+{
+  ( ?method ?endpointUri ) tuner:response ?res .
+} <= {
+  ( ?method ?endpointUri {} {} ) tuner:response ?res .
+} .
+
+{
+ ( ?method ?endpointUri ?header ?body ) tuner:response ?res .
+} <= {
+  tuner: log:uuid ?uuid .
+  (
+    #"/tmp/"
+    ?uuid ".n3"
+  ) string:concatenation ?temp .
+
+  ?body log:n3String ?bodyString .
+
+  (
+    "curl -s -X " ?method " " ?endpointUri
+    ' -H "Content-Type:text/turtle" '
+    " --data \"" ?bodyString "\""
+    " -o " ?temp
+  ) string:concatenation ?command .
+
+  ?command e:exec ?exit .
+
+  #( "rm " ?temp ) string:concatenation ?rm .
+  #?rm e:exec [] .
+
+  #?temp log:semanticsOrError ?res .
+} .

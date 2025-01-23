@@ -1,0 +1,13 @@
+{
+  "name": "api-tuner",
+  "version": "0.0.0",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "@zazuko/env-node": "^2.1.4",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/yargs": "^17.0.33"
+  }
+}
