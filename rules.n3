@@ -28,8 +28,15 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
     " > " ?responseHeadersFile
   )!string:concatenation!e:exec .
 
+  (
+    "node --loader ts-node/esm/transpile-only --no-warnings api-tuner/index.js "
+    ?responseBodyFile
+    " > " ?responseFile
+  )!string:concatenation!e:exec .
+
+  ("file://" ?responseFile)!string:concatenation^log:uri log:semantics ?res .
+
   ?responseHeadersFile!file:rm .
   ?responseBodyFile!file:rm .
-
-  #?temp log:semanticsOrError ?res .
+  ?responseFile!file:rm .
 } .

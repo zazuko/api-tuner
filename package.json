@@ -5,9 +5,9 @@
   "type": "module",
   "dependencies": {
     "@zazuko/env-node": "^2.1.4",
-    "yargs": "^17.7.2"
+    "jsonld": "^8.3.3"
   },
   "devDependencies": {
-    "@types/yargs": "^17.0.33"
+    "@types/jsonld": "^1.5.15"
   }
 }
