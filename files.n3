@@ -1,0 +1,28 @@
+prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
+prefix string: <http://www.w3.org/2000/10/swap/string#>
+prefix log: <http://www.w3.org/2000/10/swap/log#>
+prefix file: <http://www.w3.org/2000/10/swap/file#>
+
+{
+  () file:temp ?path .
+} <= {
+  ( "" ) file:temp ?path .
+} .
+
+{
+  ( ?suffix ) file:temp ?path .
+} <= {
+  ?uri log:uri ( "urn:rand:" ( 1000 )!e:random )!string:concatenation .
+
+  (
+    #"/tmp/"
+    ?uri!log:uuid
+    ?suffix
+  ) string:concatenation ?path .
+} .
+
+{
+  ?path file:rm ?iDoNotCare .
+} <= {
+  ( "rm " ?path )!string:concatenation!e:exec .
+} .

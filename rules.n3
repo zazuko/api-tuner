@@ -2,6 +2,7 @@ prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
 prefix log: <http://www.w3.org/2000/10/swap/log#>
 prefix string: <http://www.w3.org/2000/10/swap/string#>
 PREFIX tuner: <https://api-tuner.described.at/>
+prefix file: <http://www.w3.org/2000/10/swap/file#>
 
 {
   ( ?method ?endpointUri ) tuner:response ?res .
@@ -12,25 +13,23 @@ PREFIX tuner: <https://api-tuner.described.at/>
 {
  ( ?method ?endpointUri ?header ?body ) tuner:response ?res .
 } <= {
-  tuner: log:uuid ?uuid .
-  (
-    #"/tmp/"
-    ?uuid ".n3"
-  ) string:concatenation ?temp .
+  ( ?method " " ?endpointUri )!string:concatenation^e:trace .
 
-  ?body log:n3String ?bodyString .
+  () file:temp ?responseBodyFile .
+  ( ?responseBodyFile ".curl.json" ) string:concatenation ?responseHeadersFile .
+  ( ?responseBodyFile ".n3" ) string:concatenation ?responseFile .
 
   (
     "curl -s -X " ?method " " ?endpointUri
-    ' -H "Content-Type:text/turtle" '
-    " --data \"" ?bodyString "\""
-    " -o " ?temp
-  ) string:concatenation ?command .
+    " -H 'Content-Type:text/turtle' "
+    " --data-raw '" ?body!log:n3String "'"
+    " -w %{json} "
+    " -o " ?responseBodyFile
+    " > " ?responseHeadersFile
+  )!string:concatenation!e:exec .
 
-  ?command e:exec ?exit .
-
-  #( "rm " ?temp ) string:concatenation ?rm .
-  #?rm e:exec [] .
+  ?responseHeadersFile!file:rm .
+  ?responseBodyFile!file:rm .
 
   #?temp log:semanticsOrError ?res .
 } .
