@@ -3,6 +3,7 @@ prefix log: <http://www.w3.org/2000/10/swap/log#>
 prefix string: <http://www.w3.org/2000/10/swap/string#>
 PREFIX tuner: <https://api-tuner.described.at/>
 prefix file: <http://www.w3.org/2000/10/swap/file#>
+prefix earl: <http://www.w3.org/ns/earl#>
 
 {
   ( ?method ?endpointUri ) tuner:response ?res .
@@ -13,23 +14,30 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
 {
  ( ?method ?endpointUri ?header ?body ) tuner:response ?res .
 } <= {
-  ( ?method " " ?endpointUri )!string:concatenation^e:trace .
+  ({ ( ?method ?endpointUri ?header ?body ) tuner:done true } false true) log:ifThenElseIn ?SCOPE .
+
+  ?endpointUri log:uri ?endpoint .
+
+  ( ?method " " ?endpoint )!string:concatenation^tuner:trace .
 
   () file:temp ?responseBodyFile .
   ( ?responseBodyFile ".curl.json" ) string:concatenation ?responseHeadersFile .
   ( ?responseBodyFile ".n3" ) string:concatenation ?responseFile .
 
   (
-    "curl -s -X " ?method " " ?endpointUri
+    "curl -s -X " ?method " " ?endpoint
     " -H 'Content-Type:text/turtle' "
-    " --data-raw '" ?body!log:n3String "'"
+    " --data-raw $'" ?body!log:n3String " .'"
     " -w %{json} "
     " -o " ?responseBodyFile
     " > " ?responseHeadersFile
-  )!string:concatenation!e:exec .
+  ) string:concatenation ?command .
+
+  ?command^tuner:trace .
+  ?command!e:exec .
 
   (
-    "node --loader ts-node/esm/transpile-only --no-warnings api-tuner/index.js "
+    "node --loader ts-node/esm/transpile-only --no-warnings ../api-tuner/lib/merge-curl-output.js "
     ?responseBodyFile
     " > " ?responseFile
   )!string:concatenation!e:exec .
@@ -39,4 +47,6 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
   ?responseHeadersFile!file:rm .
   ?responseBodyFile!file:rm .
   ?responseFile!file:rm .
+
+  true log:becomes { ( ?method ?endpointUri ?header ?body ) tuner:done true } .
 } .
