@@ -11,15 +11,3 @@ prefix log: <http://www.w3.org/2000/10/swap/log#>
     true
   ) log:ifThenElseIn ?SCOPE .
 } .
-
-{
-  ?testCase earl:passed ?passed .
-} <= {
-  { ?testCase earl:passed ?current } log:callWithOptional {
-    {
-      ?testCase earl:passed ?current ;
-    } log:becomes {
-      ?testCase earl:passed ?passed ;
-    } .
-  } .
-} .
