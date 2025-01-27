@@ -19,6 +19,7 @@
     "eye",
     "debug",
     "lib/*.js",
+    "lib/*.ttl",
     "lib/*.sh",
     "rules"
   ],
