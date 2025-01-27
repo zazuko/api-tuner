@@ -13,7 +13,7 @@ function version() {
 
 BASE_IRI=""
 DEBUG=false
-SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js"
+SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js --summary"
 PATHS=()
 # USAGE: ./tuner.sh --debug --version ...paths
 while [ $# -gt 0 ]; do
@@ -22,8 +22,8 @@ while [ $# -gt 0 ]; do
       DEBUG=true
       shift
       ;;
-    --summary)
-      SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js --summary"
+    --raw)
+      SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js"
       shift
       ;;
     --base-iri)
