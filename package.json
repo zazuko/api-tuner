@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "main": "index.js",
   "type": "module",
+  "license": "MIT",
   "bin": {
     "api-tuner": "./bin/tuner.sh"
   },
   "scripts": {
     "download-eye": "EYE_VERSION=11.5.1 ./lib/download-eye.sh",
-    "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=."
+    "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=.",
+    "prepare": "husky",
+    "lint": "eslint . --quiet --ignore-path .gitignore"
   },
   "files": [
     "bin/tuner.sh",
@@ -25,6 +28,14 @@
   },
   "devDependencies": {
     "@rdfjs/types": "^1",
-    "@types/jsonld": "^1.5.15"
+    "@tpluscode/eslint-config": "^0.5.0",
+    "@types/jsonld": "^1.5.15",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix --quiet"
+    ]
   }
 }
