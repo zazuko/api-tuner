@@ -11,6 +11,7 @@ function version() {
   $eye --version
 }
 
+BASE_IRI=""
 DEBUG=false
 SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js"
 PATHS=()
@@ -23,6 +24,11 @@ while [ $# -gt 0 ]; do
       ;;
     --summary)
       SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js --summary"
+      shift
+      ;;
+    --base-iri)
+      BASE_IRI="$2"
+      shift
       shift
       ;;
     --version)
@@ -48,4 +54,13 @@ if [ "$DEBUG" = true ]; then
   ARGS="$ARGS ${SCRIPT_PATH}/../debug/rules.n3"
 fi
 
-$eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 "${PATHS[@]}" | $SUMMARY
+MERGED="$(mktemp)"
+if [ -n "$BASE_IRI" ]; then
+  echo "base <$BASE_IRI>" > "$MERGED"
+fi
+
+for path in "${PATHS[@]}"; do
+  cat "$path" >> "$MERGED"
+done
+
+$eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 "${MERGED}" | $SUMMARY
