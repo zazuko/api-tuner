@@ -27,7 +27,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
   (
     "curl -s -X " ?method " " ?endpoint
     " -H 'Content-Type:text/turtle' "
-    " --data-raw $'" ?body!log:n3String " .'"
+    " --data-raw $'" ?body!log:n3String "'"
     " -w %{json} "
     " -o " ?responseBodyFile
     " > " ?responseHeadersFile
