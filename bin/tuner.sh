@@ -12,7 +12,7 @@ function version() {
 }
 
 DEBUG=false
-SUMMARY="tee"
+SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js"
 PATHS=()
 # USAGE: ./tuner.sh --debug --version ...paths
 while [ $# -gt 0 ]; do
@@ -22,7 +22,7 @@ while [ $# -gt 0 ]; do
       shift
       ;;
     --summary)
-      SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js"
+      SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js --summary"
       shift
       ;;
     --version)
