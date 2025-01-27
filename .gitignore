@@ -2,3 +2,4 @@ eye.tar.gz
 eye/
 bin/eye
 lib/eye.pvm
+node_modules/

@@ -7,16 +7,24 @@
     "api-tuner": "./bin/tuner.sh"
   },
   "scripts": {
-    "update-eye": "EYE_VERSION=11.5.1 ./lib/download-eye.sh",
-    "postinstall": "eye/install.sh --prefix=."
+    "download-eye": "EYE_VERSION=11.5.1 ./lib/download-eye.sh",
+    "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=."
   },
+  "files": [
+    "bin/tuner.sh",
+    "eye",
+    "debug",
+    "lib/*.js",
+    "lib/*.sh",
+    "rules"
+  ],
   "dependencies": {
     "@jeswr/pretty-turtle": "^1.5.0",
     "@zazuko/env-node": "^2.1.4",
     "jsonld": "^8.3.3"
   },
   "devDependencies": {
-    "@rdfjs/types": "^2.0.1",
+    "@rdfjs/types": "^1",
     "@types/jsonld": "^1.5.15"
   }
 }
