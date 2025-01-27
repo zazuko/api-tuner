@@ -10,5 +10,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+      - uses: fabasoad/setup-prolog-action@v1
       - run: npm ci
       - run: npm run lint
