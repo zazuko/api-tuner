@@ -6,8 +6,8 @@ PREFIX sh: <http://www.w3.org/ns/shacl#>
   sh:targetClass earl:TestCase ;
   sh:property
     [
-      sh:path earl:passed ;
-      sh:hasValue true ;
+      sh:path earl:outcome ;
+      sh:hasValue earl:passed ;
       sh:maxCount 1 ;
       sh:message "Test failed" ;
     ] ;
