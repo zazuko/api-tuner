@@ -12,12 +12,17 @@ function version() {
 }
 
 DEBUG=false
+SUMMARY="tee"
 PATHS=()
 # USAGE: ./tuner.sh --debug --version ...paths
 while [ $# -gt 0 ]; do
   case "$1" in
     --debug)
       DEBUG=true
+      shift
+      ;;
+    --summary)
+      SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js"
       shift
       ;;
     --version)
@@ -43,4 +48,4 @@ if [ "$DEBUG" = true ]; then
   ARGS="$ARGS ${SCRIPT_PATH}/../debug/rules.n3"
 fi
 
-$eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 "${PATHS[@]}"
+$eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 "${PATHS[@]}" | $SUMMARY

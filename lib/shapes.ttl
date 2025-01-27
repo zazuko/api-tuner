@@ -1,0 +1,14 @@
+PREFIX earl: <http://www.w3.org/ns/earl#>
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+
+[
+  a sh:NodeShape ;
+  sh:targetClass earl:TestCase ;
+  sh:property
+    [
+      sh:path earl:passed ;
+      sh:hasValue true ;
+      sh:maxCount 1 ;
+      sh:message "Test failed" ;
+    ] ;
+] .
