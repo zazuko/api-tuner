@@ -12,7 +12,7 @@
     "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=.",
     "prepare": "husky",
     "lint": "eslint . --quiet --ignore-path .gitignore",
-    "test": "node lib/check-result.js < test.ttl"
+    "test": "./bin/tuner.sh tests/*.n3"
   },
   "files": [
     "bin/tuner.sh",
