@@ -11,6 +11,17 @@ function version() {
   $eye --version
 }
 
+ function usage() {
+   echo "Usage: api-tuner [options] <path>..."
+   echo ""
+   echo "Options:"
+   echo "  --debug            Enable debug output"
+   echo "  --raw              Output raw results from eye"
+   echo "  --base-iri <iri>   Specify the base IRI for parsing the test case files"
+   echo "  --version          Show version information"
+   echo "  --help             Show this help message"
+ }
+
 BASE_IRI=""
 DEBUG=false
 SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js --summary"
@@ -35,6 +46,10 @@ while [ $# -gt 0 ]; do
       version
       exit 0
       ;;
+    --help)
+      usage
+      exit 0
+      ;;
     *)
       PATHS+=("$1")
       shift
@@ -44,7 +59,7 @@ done
 
 # if no paths
 if [ ${#PATHS[@]} -eq 0 ]; then
-  version
+  usage
   exit 1
 fi
 
