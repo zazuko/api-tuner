@@ -37,7 +37,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
   ?command!e:exec .
 
   (
-    "node ../api-tuner/lib/merge-curl-output.js "
+    "node " <>!file:basePath "../lib/merge-curl-output.js "
     ?responseBodyFile
     " > " ?responseFile
   )!string:concatenation!e:exec .

@@ -26,3 +26,11 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
 } <= {
   ( "rm " ?path )!string:concatenation!e:exec .
 } .
+
+{
+  ?uri file:basePath ?basePath .
+} <= {
+  (
+    (?uri!log:uri "/[\\w.]+$" "/")!string:replace 8
+  ) string:substring ?basePath .
+} .
