@@ -21,6 +21,7 @@
     "lib/*.js",
     "lib/*.ttl",
     "lib/*.sh",
+    "lib/*.txt",
     "rules"
   ],
   "dependencies": {
