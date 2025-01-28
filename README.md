@@ -42,9 +42,16 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
   rdfs:label "Simple GET test" ;
 .
 
+# Configure a request
+:req
+  a tuner:Request ;
+  tuner:url <http://example.com/> ;
+  tuner:method "GET" ;
+.
+
 {
-  # Execute a request and capture the response
-  ( "GET" <http://example.com/> ) tuner:response ?res .
+  # Execute the request and capture its response
+  :req tuner:response ?res .
 
   # Check the response status code and content type
   ?res log:includes {
@@ -63,6 +70,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
   # Use te EARL vocabulary to assert the test passed
   :getExampleDotCom earl:outcome earl:passed .
 } .
+
 ```
 
 Execute the test case:

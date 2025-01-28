@@ -1,3 +1,4 @@
+PREFIX list: <http://www.w3.org/2000/10/swap/list#>
 prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
 prefix log: <http://www.w3.org/2000/10/swap/log#>
 prefix string: <http://www.w3.org/2000/10/swap/string#>
@@ -6,15 +7,33 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
 prefix earl: <http://www.w3.org/ns/earl#>
 
 {
-  ( ?method ?endpointUri ) tuner:response ?res .
+  (?fieldName ?fieldValue) tuner:headerArg ?curlArg .
 } <= {
-  ( ?method ?endpointUri {} {} ) tuner:response ?res .
+  ( " -H '" ?fieldName ":" ?fieldValue "'" ) string:concatenation ?curlArg .
 } .
 
 {
- ( ?method ?endpointUri ?header ?body ) tuner:response ?res .
+  ?req tuner:response ?res .
 } <= {
-  ({ ( ?method ?endpointUri ?header ?body ) tuner:done true } false true) log:ifThenElseIn ?SCOPE .
+  ({ ?req tuner:done true } false true) log:ifThenElseIn ?SCOPE .
+  true log:becomes { ?req tuner:done true } .
+
+  {
+    ?req a tuner:Request .
+    ?req tuner:method ?method .
+    ?req tuner:url ?endpointUri .
+  } log:callWithOptional {
+    ?req tuner:body ?body .
+  } .
+
+  (
+    { ?req tuner:header [] . }
+    {
+      ( ?header { ?req tuner:header ?header } ?headers ) log:collectAllIn [] .
+      ( ?headers tuner:headerArg )!list:map string:concatenation ?headersArgs .
+    }
+    { ?headersArgs log:equalTo "" }
+  ) log:ifThenElseIn [] .
 
   ?endpointUri log:uri ?endpoint .
 
@@ -27,8 +46,9 @@ prefix earl: <http://www.w3.org/ns/earl#>
   (
     "curl -s -X " ?method " " ?endpoint
     " -H 'Content-Type:text/turtle' "
+    ?headersArgs
     " --data-raw $'" ?body!log:n3String "'"
-    " -w %{json} "
+    " -w @" (<>!file:basePath "../lib/curl-format.txt")!string:concatenation
     " -o " ?responseBodyFile
     " > " ?responseHeadersFile
   ) string:concatenation ?command .
@@ -47,6 +67,4 @@ prefix earl: <http://www.w3.org/ns/earl#>
   ?responseHeadersFile!file:rm .
   ?responseBodyFile!file:rm .
   ?responseFile!file:rm .
-
-  true log:becomes { ( ?method ?endpointUri ?header ?body ) tuner:done true } .
 } .

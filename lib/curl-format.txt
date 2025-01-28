@@ -1,0 +1,4 @@
+{
+  "response": %{json},
+  "headers": %{header_json}
+}
