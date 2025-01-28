@@ -56,7 +56,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
   # Check the response status code and content type
   ?res log:includes {
     [] tuner:http_code 200 .
-    [] tuner:content_type "text/html" .
+    [] tuner:header ( "content-type" "text/html" ) .
   } .
 
   # Check the body contains the work "Example"
