@@ -9,19 +9,15 @@
   },
   "scripts": {
     "download-eye": "EYE_VERSION=11.5.2 ./lib/download-eye.sh",
-    "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=.",
+    "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=eye",
     "prepare": "husky",
     "lint": "eslint . --quiet --ignore-path .gitignore",
     "test": "./bin/tuner.sh tests/*.n3"
   },
   "files": [
     "bin/tuner.sh",
-    "eye",
     "debug",
-    "lib/*.js",
-    "lib/*.ttl",
-    "lib/*.sh",
-    "lib/*.txt",
+    "lib",
     "rules"
   ],
   "dependencies": {

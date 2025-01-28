@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPT_PATH=$(dirname "$(readlink -f "$0")")
 
-eye="swipl -x ${SCRIPT_PATH}/../lib/eye.pvm --"
+eye="swipl -x ${SCRIPT_PATH}/../eye/lib/eye.pvm --"
 
 # function prints version
 function version() {
