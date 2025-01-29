@@ -16,7 +16,7 @@
   },
   "files": [
     "bin/tuner.sh",
-    "debug",
+    "logging",
     "lib",
     "rules"
   ],
