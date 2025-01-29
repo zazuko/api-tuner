@@ -7,8 +7,17 @@ prefix log: <http://www.w3.org/2000/10/swap/log#>
 } <= {
   ?res log:includes {
     [] a tuner:Response ;
-    tuner:http_code ?value .
+    tuner:http_code ?actualValue .
   } .
+
+  (
+    { ?actualValue log:equalTo ?value }
+    true
+    {
+      ("Expected status code " ?value " but got " ?actualValue)!string:concatenation^tuner:info .
+      true log:equalTo false .
+    }
+  ) log:ifThenElseIn ?SCOPE .
 } .
 
 {
