@@ -1,0 +1,9 @@
+services:
+  mock-server:
+    image: mockserver/mockserver:latest
+    ports:
+      - 1080:1080
+    volumes:
+      - ./tests/mockserver.json:/config/initializer.json
+    environment:
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/initializer.json

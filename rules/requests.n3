@@ -15,9 +15,6 @@ prefix earl: <http://www.w3.org/ns/earl#>
 {
   ?req tuner:response ?res .
 } <= {
-  ({ ?req tuner:done true } false true) log:ifThenElseIn ?SCOPE .
-  true log:becomes { ?req tuner:done true } .
-
   {
     ?req a tuner:Request .
     ?req tuner:method ?method .
@@ -25,6 +22,8 @@ prefix earl: <http://www.w3.org/ns/earl#>
   } log:callWithOptional {
     ?req tuner:body ?body .
   } .
+  ({ ?req tuner:done true } false true) log:ifThenElseIn ?SCOPE .
+                                        true log:becomes { ?req tuner:done true } .
 
   (
     { ?req tuner:header [] . }
@@ -42,6 +41,8 @@ prefix earl: <http://www.w3.org/ns/earl#>
   () file:temp ?responseBodyFile .
   ( ?responseBodyFile ".curl.json" ) string:concatenation ?responseHeadersFile .
   ( ?responseBodyFile ".n3" ) string:concatenation ?responseFile .
+
+  ( "Calling " ?method " " ?endpoint )!string:concatenation^tuner:info .
 
   (
     "curl -s -X " ?method " " ?endpoint
@@ -63,6 +64,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
   )!string:concatenation!e:exec .
 
   ("file://" ?responseFile)!string:concatenation^log:uri log:semantics ?res .
+  ?res^tuner:trace .
 
   ?responseHeadersFile!file:rm .
   ?responseBodyFile!file:rm .

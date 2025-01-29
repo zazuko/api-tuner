@@ -1,0 +1,27 @@
+[
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/location-header"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Location": ["http://foo.bar/baz"]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/example.com"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": "<html><body><h1>Example Domain</h1></body></html>",
+      "headers": {
+        "Content-Type": ["text/html"]
+      }
+    }
+  }
+]

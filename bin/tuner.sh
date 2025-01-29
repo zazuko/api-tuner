@@ -15,6 +15,7 @@ function version() {
    echo "Usage: api-tuner [options] <path>..."
    echo ""
    echo "Options:"
+   echo "  --silent           Less output"
    echo "  --debug            Enable debug output"
    echo "  --raw              Output raw results from eye"
    echo "  --base-iri <iri>   Specify the base IRI for parsing the test case files"
@@ -22,6 +23,7 @@ function version() {
    echo "  --help             Show this help message"
  }
 
+SILENT=false
 BASE_IRI=""
 DEBUG=false
 SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js --summary"
@@ -31,6 +33,10 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --debug)
       DEBUG=true
+      shift
+      ;;
+    --silent)
+      SILENT=true
       shift
       ;;
     --raw)
@@ -66,7 +72,11 @@ fi
 ARGS="--quiet --nope --pass"
 
 if [ "$DEBUG" = true ]; then
-  ARGS="$ARGS ${SCRIPT_PATH}/../debug/rules.n3"
+  ARGS="$ARGS ${SCRIPT_PATH}/../logging/debug.n3"
+fi
+
+if [ "$SILENT" != true ]; then
+  ARGS="$ARGS ${SCRIPT_PATH}/../logging/info.n3"
 fi
 
 MERGED="$(mktemp)"

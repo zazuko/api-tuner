@@ -17,6 +17,7 @@
 Usage: api-tuner [options] <path>...
 
 Options:
+  --silent           Less output
   --debug            Enable debug output
   --raw              Output raw results from eye
   --base-iri <iri>   Specify the base IRI for parsing the test case files
@@ -45,7 +46,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 # Configure a request
 :req
   a tuner:Request ;
-  tuner:url <http://example.com/> ;
+  tuner:url <http://localhost:1080/example.com> ;
   tuner:method "GET" ;
 .
 
@@ -54,23 +55,16 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
   :req tuner:response ?res .
 
   # Check the response status code and content type
-  ?res log:includes {
-    [] tuner:http_code 200 .
-    [] tuner:header ( "content-type" "text/html" ) .
-  } .
+  ?res tuner:http_code 200 ;
+    tuner:header ( "content-type" "text/html" ) ;
+  .
 
   # Check the body contains the work "Example"
-  ?res log:includes {
-    [] tuner:body ?body .
-  } .
-
-  # Note that assertions on ?body are outside the log:includes block
-  ?body string:contains "Example Domain" .
+  ?res!tuner:body string:contains "Example Domain" .
 } => {
   # Use te EARL vocabulary to assert the test passed
   :getExampleDotCom earl:outcome earl:passed .
 } .
-
 ```
 
 Execute the test case:

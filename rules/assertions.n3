@@ -1,0 +1,49 @@
+PREFIX tuner: <https://api-tuner.described.at/>
+prefix string: <http://www.w3.org/2000/10/swap/string#>
+prefix log: <http://www.w3.org/2000/10/swap/log#>
+
+{
+  ?res tuner:http_code ?value .
+} <= {
+  ?res log:includes {
+    [] a tuner:Response ;
+    tuner:http_code ?value .
+  } .
+} .
+
+{
+  ?res tuner:body ?body .
+} <= {
+  ?res log:includes {
+    [] a tuner:Response ; tuner:body ?body .
+  } .
+} .
+
+{
+  ?res tuner:header ( ?name ?value ) .
+} <= {
+  ?res tuner:header ( ?name ?value log:equalTo ) .
+}.
+
+{
+  ?res tuner:header ( ?name ?value ?builtIn ) .
+} <= {
+  ?name string:lowerCase ?nameLower .
+
+  ?res log:includes {
+    [] a tuner:Response ;
+    tuner:headers [
+      tuner:name ?nameLower ;
+      tuner:value ?actualValue ;
+    ] .
+  } .
+
+  (
+    { ?actualValue ?builtIn ?value }
+    true
+    {
+      ("Expected header '" ?name "' '" ?value "' to satify '" ?builtIn "' but got '" ?actualValue "'")!string:concatenation^tuner:info .
+      true log:equalTo false .
+    }
+  ) log:ifThenElseIn ?SCOPE .
+} .
