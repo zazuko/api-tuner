@@ -51,7 +51,7 @@ prefix log: <http://www.w3.org/2000/10/swap/log#>
     { ?actualValue ?builtIn ?value }
     true
     {
-      ("Expected header '" ?name "' '" ?value "' to satify '" ?builtIn "' but got '" ?actualValue "'")!string:concatenation^tuner:info .
+      ("Expected header '" ?name "' '" ?value "' to satisfy '" ?builtIn "' but got '" ?actualValue "'")!string:concatenation^tuner:info .
       true log:equalTo false .
     }
   ) log:ifThenElseIn ?SCOPE .
