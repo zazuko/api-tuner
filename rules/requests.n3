@@ -45,7 +45,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
   ( "Calling " ?method " " ?endpoint )!string:concatenation^tuner:info .
 
   (
-    "curl -s -X " ?method " " ?endpoint
+    "curl -s -X " ?method " '" ?endpoint "'"
     " -H 'Content-Type:text/turtle' "
     ?headersArgs
     " --data-raw $'" ?body!log:n3String "'"

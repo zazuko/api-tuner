@@ -23,5 +23,14 @@
         "Content-Type": ["text/html"]
       }
     }
+  },
+  {
+    "httpRequest": {
+      "path": "/query-params-echo"
+    },
+    "httpResponseTemplate": {
+      "template": "{\"statusCode\": 200, \"headers\": {#foreach( $entry in $request.queryStringParameters.entrySet() )\"X-$entry.key\": #foreach( $value in $entry.value)\"$value\"#if( $foreach.hasNext ), #end#end#if( $foreach.hasNext ), #end#end}}",
+      "templateType": "VELOCITY"
+    }
   }
 ]
