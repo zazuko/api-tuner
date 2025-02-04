@@ -39,16 +39,25 @@ prefix earl: <http://www.w3.org/ns/earl#>
   ( ?method " " ?endpoint )!string:concatenation^tuner:trace .
 
   () file:temp ?responseBodyFile .
+  () file:temp ?requestBodyFile .
   ( ?responseBodyFile ".curl.json" ) string:concatenation ?responseHeadersFile .
   ( ?responseBodyFile ".n3" ) string:concatenation ?responseFile .
 
   ( "Calling " ?method " " ?endpoint )!string:concatenation^tuner:info .
 
+  # Save body to file so that it can be used in the curl command reliably
+  (
+    "echo '" ?body!log:n3String "' | "
+    # need to replace quotes around string
+    ( <>!file:basePath "../lib/replace-quotes.sh" )!string:concatenation
+    " > " ?requestBodyFile
+  )!string:concatenation!e:exec .
+
   (
     "curl -s -X " ?method " '" ?endpoint "'"
     " -H 'Content-Type:text/turtle' "
     ?headersArgs
-    " --data-raw $'" ?body!log:n3String "'"
+    " --data-binary @" ?requestBodyFile
     " -w @" (<>!file:basePath "../lib/curl-format.txt")!string:concatenation
     " -o " ?responseBodyFile
     " > " ?responseHeadersFile
@@ -66,6 +75,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
   ("file://" ?responseFile)!string:concatenation^log:uri log:semantics ?res .
   ?res^tuner:trace .
 
+  ?requestBodyFile!file:rm .
   ?responseHeadersFile!file:rm .
   ?responseBodyFile!file:rm .
   ?responseFile!file:rm .
