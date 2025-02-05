@@ -23,7 +23,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
     ?req tuner:body ?body .
   } .
   ({ ?req tuner:done true } false true) log:ifThenElseIn ?SCOPE .
-                                        true log:becomes { ?req tuner:done true } .
+  true log:becomes { ?req tuner:done true } .
 
   (
     { ?req tuner:header [] . }
@@ -44,7 +44,11 @@ prefix earl: <http://www.w3.org/ns/earl#>
 
   ( "Calling " ?method " " ?endpoint )!string:concatenation^tuner:info .
 
-  ?body </#body> ( ?bodyArgs ?requestBodyFile ) .
+  (
+    { ?req tuner:body ?body  }
+    { ?body </#body> ( ?bodyArgs ?requestBodyFile ) }
+    { ?bodyArgs log:equalTo "" }
+  ) log:ifThenElseIn [] .
 
   (
     "curl -s -X " ?method " '" ?endpoint "'"

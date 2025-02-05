@@ -42,5 +42,18 @@
       "template": "{\"statusCode\": 200, \"headers\": { \"Content-Type\": \"text/turtle\" }, \"body\": \"$request.body.replace('\"', '\\\"')\"}",
       "templateType": "VELOCITY"
     }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/body-multipart",
+      "headers": {
+        "Content-Type": ["multipart/form-data.*"]
+      }
+    },
+    "httpResponseTemplate": {
+      "template": "{\"statusCode\": 200, \"body\": \"$request.body.replace('\"', '\\\"')\"}",
+      "templateType": "VELOCITY"
+    }
   }
 ]

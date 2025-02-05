@@ -1,3 +1,5 @@
+PREFIX list: <http://www.w3.org/2000/10/swap/list#>
+PREFIX tuner: <https://api-tuner.described.at/>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 prefix file: <http://www.w3.org/2000/10/swap/file#>
@@ -24,9 +26,33 @@ prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
 {
   ?fileUrl </#body> ( ?curlArgs [] ) .
 } <= {
-  ?fileUrl log:uri ?fileUri .
-  ?fileUri string:startsWith "file:" .
-  ( ?fileUri 6 ) string:substring ?relative .
+  ( " --data-binary " ?fileUrl!file:curlFileReference ) string:concatenation ?curlArgs .
+} .
 
-  ( " --data-binary @$(pwd)/" ?relative ) string:concatenation ?curlArgs .
+{
+  ?multipartBody </#body> ( ?curlArgs [] ) .
+} <= {
+  ?multipartBody!log:rawType list:in ( log:LabeledBlankNode log:UnlabeledBlankNode ) .
+
+  (
+    ?formField
+    {
+      ?multipartBody tuner:form ( ?name ?value ) .
+
+      (
+        { ?value log:rawType log:Literal }
+        {
+          ( " -F " ?name "=" ?value ) string:concatenation ?formField .
+        }
+        {
+          ( " -F " ?name "=" ?value!file:curlFileReference ) string:concatenation ?formField .
+        }
+      ) log:ifThenElseIn [] .
+    }
+    ?formFields
+  ) log:collectAllIn [] .
+
+  (
+    ?formFields!string:concatenation
+  ) string:concatenation ?curlArgs .
 } .
