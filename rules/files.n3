@@ -28,9 +28,13 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
 } .
 
 {
-  ?uri file:basePath ?basePath .
+  ?relative file:libPath ?absolute .
 } <= {
   (
-    (?uri!log:uri "/[\\w.]+$" "/")!string:replace 8
+    (<>!log:uri "/[^/]+$" "/")!string:replace 8
   ) string:substring ?basePath .
+
+  (
+    ?basePath "../" ?relative
+  ) string:concatenation ?absolute .
 } .

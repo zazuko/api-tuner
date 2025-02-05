@@ -1,0 +1,55 @@
+PREFIX ex: <http://example.org/>
+prefix : <https://api-tuner.described.at/test#bodies/>
+PREFIX earl: <http://www.w3.org/ns/earl#>
+PREFIX tuner: <https://api-tuner.described.at/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX log: <http://www.w3.org/2000/10/swap/log#>
+PREFIX string: <http://www.w3.org/2000/10/swap/string#>
+
+:inlineRdfBodyTestCase
+  a earl:TestCase ;
+  rdfs:label "Request with inline RDF body" ;
+  tuner:request  [
+    a tuner:Request ;
+    tuner:url <http://localhost:1080/body-echo> ;
+    tuner:method "POST" ;
+    tuner:body {
+      ex:foo ex:bar "baz" .
+    } ;
+  ]
+.
+
+{
+  :inlineRdfBodyTestCase!tuner:request tuner:response ?res .
+
+  ?res tuner:http_code 200 .
+  ?res!tuner:body log:includes {
+    ex:foo ex:bar "baz" .
+  } .
+} => {
+  :inlineRdfBodyTestCase earl:outcome earl:passed .
+} .
+
+############################################
+
+:fileRdfBodyTestCase
+  a earl:TestCase ;
+  rdfs:label "Request with RDF from file (direct upload)" ;
+  tuner:request [
+    a tuner:Request ;
+    tuner:url <http://localhost:1080/body-echo> ;
+    tuner:method "POST" ;
+    tuner:body <file:tests/bodies/foobar.ttl> ;
+  ]
+.
+
+{
+  :fileRdfBodyTestCase!tuner:request tuner:response ?res .
+
+  ?res tuner:http_code 200 .
+  ?res!tuner:body log:includes {
+    ex:foo ex:bar "baz" .
+  } .
+} => {
+  :fileRdfBodyTestCase earl:outcome earl:passed .
+} .

@@ -1,0 +1,32 @@
+PREFIX string: <http://www.w3.org/2000/10/swap/string#>
+PREFIX log: <http://www.w3.org/2000/10/swap/log#>
+prefix file: <http://www.w3.org/2000/10/swap/file#>
+prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
+
+{
+  ?body </#body> ( ?curlArgs ?requestBodyFile ) .
+} <= {
+  ?body log:rawType log:Formula .
+  ?body log:n3String ?serialized .
+  () file:temp ?requestBodyFile .
+
+  # Save body to file so that it can be used in the curl command reliably
+  (
+    "echo '" ?serialized "' | "
+    # need to replace quotes around string
+    ( "lib/replace-quotes.sh"!file:libPath )!string:concatenation
+    " > " ?requestBodyFile
+  )!string:concatenation!e:exec .
+
+  ( " -H 'Content-Type:text/turtle' --data-binary @" ?requestBodyFile ) string:concatenation ?curlArgs .
+} .
+
+{
+  ?fileUrl </#body> ( ?curlArgs [] ) .
+} <= {
+  ?fileUrl log:uri ?fileUri .
+  ?fileUri string:startsWith "file:" .
+  ( ?fileUri 6 ) string:substring ?relative .
+
+  ( " --data-binary @$(pwd)/" ?relative ) string:concatenation ?curlArgs .
+} .
