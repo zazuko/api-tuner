@@ -38,17 +38,8 @@ prefix math: <http://www.w3.org/2000/10/swap/math#>
   (
     ?formField
     {
-      ?multipartBody tuner:form ( ?name ?value ) .
-
-      (
-        { ?value log:rawType log:Literal }
-        {
-          ( " -F " ?name "=" ?value ) string:concatenation ?formField .
-        }
-        {
-          ( " -F " ?name "=" ?value!file:curlFileReference ) string:concatenation ?formField .
-        }
-      ) log:ifThenElseIn [] .
+      ?multipartBody tuner:form ?list .
+      ?list </#field> ?formField .
     }
     ?formFields
   ) log:collectAllIn [] .
@@ -56,4 +47,35 @@ prefix math: <http://www.w3.org/2000/10/swap/math#>
   (
     ?formFields!string:concatenation
   ) string:concatenation ?curlArgs .
+} .
+
+{
+  ( ?name ?value ) </#field> ?formField .
+} <= {
+  {
+    ?value log:rawType log:Literal .
+    ( " -F " ?name "=" ?value ) string:concatenation ?formField .
+  } log:callWithCut true .
+} .
+
+{
+  ( ?name ?value ) </#field> ?formField .
+} <= {
+  ( ?name ?value "" ) </#field> ?formField .
+} .
+
+{
+  ( ?name ?value ?type ) </#field> ?formField .
+} <= {
+  (
+    { ?type!string:length math:greaterThan 0 }
+    {
+      ( "';type=" ?type "'" ) string:concatenation ?typeParam
+    }
+    {
+      ?typeParam log:equalTo "" .
+    }
+  ) log:ifThenElseIn [] .
+
+  ( " -F " ?name "=" ?value!file:curlFileReference ?typeParam ) string:concatenation ?formField .
 } .
