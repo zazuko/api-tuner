@@ -1,0 +1,32 @@
+prefix : <https://api-tuner.described.at/test#http-code/>
+PREFIX earl: <http://www.w3.org/ns/earl#>
+PREFIX tuner: <https://api-tuner.described.at/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX log: <http://www.w3.org/2000/10/swap/log#>
+PREFIX string: <http://www.w3.org/2000/10/swap/string#>
+prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
+
+:
+  a earl:TestCase ;
+  rdfs:label "Test dailed request" ;
+  tuner:request [
+    a tuner:Request ;
+    tuner:url <http://foo.bar/baz> ;
+    tuner:method "GET" ;
+  ]
+  .
+
+{
+  (
+    { :!tuner:request tuner:response ?res }
+    {
+      "Expected failure"^tuner:info .
+      true log:equalTo false .
+    }
+    {
+      "if [[ `git status --porcelain` ]]; then exit 1; fi" e:exec 0 .
+    }
+  ) log:ifThenElseIn [] .
+} => {
+  : earl:outcome earl:passed .
+} .

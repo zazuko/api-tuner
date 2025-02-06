@@ -42,37 +42,41 @@ prefix earl: <http://www.w3.org/ns/earl#>
   ( ?responseBodyFile ".curl.json" ) string:concatenation ?responseHeadersFile .
   ( ?responseBodyFile ".n3" ) string:concatenation ?responseFile .
 
-  ( "Calling " ?method " " ?endpoint )!string:concatenation^tuner:info .
+  {
+    ( "Calling " ?method " " ?endpoint )!string:concatenation^tuner:info .
 
-  (
-    { ?req tuner:body ?body  }
-    { ?body </#body> ( ?bodyArgs ?requestBodyFile ) }
-    { ?bodyArgs log:equalTo "" }
-  ) log:ifThenElseIn [] .
+    (
+      { ?req tuner:body ?body  }
+      { ?body </#body> ( ?bodyArgs ?requestBodyFile ) }
+      { ?bodyArgs log:equalTo "" }
+    ) log:ifThenElseIn [] .
 
-  (
-    "curl -s -X " ?method " '" ?endpoint "'"
-    ?headersArgs
-    ?bodyArgs
-    " -w @" ( "lib/curl-format.txt"!file:libPath )!string:concatenation
-    " -o " ?responseBodyFile
-    " > " ?responseHeadersFile
-  ) string:concatenation ?command .
+    (
+      "curl -s -X " ?method " '" ?endpoint "'"
+      ?headersArgs
+      ?bodyArgs
+      " -w @" ( "lib/curl-format.txt"!file:libPath )!string:concatenation
+      " -o " ?responseBodyFile
+      " > " ?responseHeadersFile
+    ) string:concatenation ?command .
 
-  ?command^tuner:trace .
-  ?command!e:exec .
+    ?command^tuner:trace .
+    ?command!e:exec .
 
-  (
-    "node " "lib/merge-curl-output.js"!file:libPath " "
-    ?responseBodyFile
-    " > " ?responseFile
-  )!string:concatenation!e:exec .
+    (
+      "node " "lib/merge-curl-output.js"!file:libPath " "
+      ?responseBodyFile
+      " > " ?responseFile
+    )!string:concatenation!e:exec .
 
-  ("file://" ?responseFile)!string:concatenation^log:uri log:semantics ?res .
-  ?res^tuner:trace .
-
-  ( { ?requestBodyFile log:rawType log:Literal } { ?requestBodyFile!file:rm } true ) log:ifThenElseIn [] .
-  ?responseHeadersFile!file:rm .
-  ?responseBodyFile!file:rm .
-  ?responseFile!file:rm .
+    ("file://" ?responseFile)!string:concatenation^log:uri log:semantics ?res .
+    ?res^tuner:trace .
+  } log:callWithCleanup {
+    {
+      ( { ?requestBodyFile log:rawType log:Literal } { ?requestBodyFile!file:rm } true ) log:ifThenElseIn [] .
+    } log:callWithCleanup true .
+    { ?responseHeadersFile!file:rm } log:callWithCleanup true .
+    { ?responseBodyFile!file:rm } log:callWithCleanup true .
+    { ?responseFile!file:rm } log:callWithCleanup true .
+  } .
 } .

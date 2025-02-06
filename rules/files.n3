@@ -24,7 +24,7 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
 {
   ?path file:rm ?iDoNotCare .
 } <= {
-  ( "rm " ?path )!string:concatenation!e:exec .
+  ( "rm " ?path " 2> /dev/null" )!string:concatenation!e:exec .
 } .
 
 {
