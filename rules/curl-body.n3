@@ -4,6 +4,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 prefix file: <http://www.w3.org/2000/10/swap/file#>
 prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
+prefix math: <http://www.w3.org/2000/10/swap/math#>
 
 {
   ?body </#body> ( ?curlArgs ?requestBodyFile ) .
@@ -32,7 +33,7 @@ prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
 {
   ?multipartBody </#body> ( ?curlArgs [] ) .
 } <= {
-  ?multipartBody!log:rawType list:in ( log:LabeledBlankNode log:UnlabeledBlankNode ) .
+  ?multipartBody!tuner:form!list:length math:greaterThan 0 .
 
   (
     ?formField
