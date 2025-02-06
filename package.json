@@ -12,7 +12,8 @@
     "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=eye",
     "prepare": "husky",
     "lint": "eslint . --quiet --ignore-path .gitignore",
-    "test": "./bin/tuner.sh tests/*.n3 tests/**/*.n3"
+    "test": "./bin/tuner.sh tests/*.n3 tests/**/*.n3",
+    "release": "changeset publish"
   },
   "files": [
     "bin/tuner.sh",
@@ -21,6 +22,7 @@
     "rules"
   ],
   "dependencies": {
+    "@changesets/cli": "^2.27.12",
     "@jeswr/pretty-turtle": "^1.5.0",
     "@zazuko/env-node": "^2.1.4",
     "jsonld": "^8.3.3",
