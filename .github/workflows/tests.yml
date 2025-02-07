@@ -15,6 +15,7 @@ jobs:
       - run: docker compose up -d
       - run: npx wait-on http-get://localhost:1080/example.com
       - run: npm test
+        shell: bash
       - run: if [[ `git status --porcelain` ]]; then git status --porcelain && exit 1; fi
   lint:
     runs-on: ubuntu-latest
