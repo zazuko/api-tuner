@@ -88,4 +88,5 @@ for path in "${PATHS[@]}"; do
   cat "$path" >> "$MERGED"
 done
 
+set -o pipefail
 $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 "${MERGED}" | $SUMMARY
