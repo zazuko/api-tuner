@@ -24,7 +24,7 @@ prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
       true log:equalTo false .
     }
     {
-      "if [[ `git status --porcelain` ]]; then exit 1; fi" e:exec 0 .
+      "if git status --porcelain | grep .; then exit 1; fi" e:exec 0 .
     }
   ) log:ifThenElseIn [] .
 } => {
