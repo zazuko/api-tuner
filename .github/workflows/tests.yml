@@ -13,6 +13,10 @@ jobs:
       - uses: fabasoad/setup-prolog-action@v1
       - run: npm ci
       - run: npm test
+      - uses: mskri/check-uncommitted-changes-action@v1.0.1
+        id: check-changes
+      - if: steps.check-changes.outputs.changes != ''
+        run: echo "There are uncommitted changes"
   lint:
     runs-on: ubuntu-latest
     steps:
