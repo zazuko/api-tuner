@@ -1,5 +1,12 @@
 # api-tuner
 
+## 0.1.3
+
+### Patch Changes
+
+- cd11255: Exit code was '0' when the eye process fail
+- c2a477e: Temporary request body file was not removed
+
 ## 0.1.2
 
 ### Patch Changes
