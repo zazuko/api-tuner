@@ -61,7 +61,13 @@ prefix earl: <http://www.w3.org/ns/earl#>
     ) string:concatenation ?command .
 
     ?command^tuner:trace .
-    ?command!e:exec .
+    {
+      ?command!e:exec .
+    } log:callWithCleanup {
+      {
+        ( { ?requestBodyFile log:rawType log:Literal } { ?requestBodyFile!file:rm } true ) log:ifThenElseIn [] .
+      } log:callWithCleanup true .
+    } .
 
     (
       "node " "lib/merge-curl-output.js"!file:libPath " "
@@ -72,9 +78,6 @@ prefix earl: <http://www.w3.org/ns/earl#>
     ("file://" ?responseFile)!string:concatenation^log:uri log:semantics ?res .
     ?res^tuner:trace .
   } log:callWithCleanup {
-    {
-      ( { ?requestBodyFile log:rawType log:Literal } { ?requestBodyFile!file:rm } true ) log:ifThenElseIn [] .
-    } log:callWithCleanup true .
     { ?responseHeadersFile!file:rm } log:callWithCleanup true .
     { ?responseBodyFile!file:rm } log:callWithCleanup true .
     { ?responseFile!file:rm } log:callWithCleanup true .
