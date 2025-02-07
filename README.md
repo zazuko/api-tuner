@@ -6,6 +6,14 @@
 
 - [SWI Prolog](https://www.swi-prolog.org/Download.html)
 
+Follow platform-specific instructions to install locally oor in a docker image.
+
+To run `api-tuner` in GitHub workflow, you add this action to your jobs:
+
+```yaml
+- uses: fabasoad/setup-prolog-action@v1
+```
+
 ## Installation
 
 `npm i api-tuner`
