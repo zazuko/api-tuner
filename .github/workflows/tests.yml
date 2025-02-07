@@ -12,6 +12,7 @@ jobs:
           node-version: lts/*
       - uses: fabasoad/setup-prolog-action@v1
       - run: npm ci
+      - run: docker compose up -d
       - run: npm test
       - uses: mskri/check-uncommitted-changes-action@v1.0.1
         id: check-changes
