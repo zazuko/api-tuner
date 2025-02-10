@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.1.4
+
+### Patch Changes
+
+- 51493a9: Added `tuner:assertThat` backward rule
+
 ## 0.1.3
 
 ### Patch Changes
