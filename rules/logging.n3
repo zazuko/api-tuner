@@ -22,3 +22,13 @@ prefix string: <http://www.w3.org/2000/10/swap/string#>
     true
   ) log:ifThenElseIn ?SCOPE .
 } .
+
+{
+  ?left tuner:logFailedAssertion ?right .
+} <= {
+  (
+    { [] tuner:logLevel 'info' }
+    { 'Failed assertion' log:trace ?right . }
+    true
+  ) log:ifThenElseIn ?SCOPE .
+} .

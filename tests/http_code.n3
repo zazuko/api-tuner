@@ -1,3 +1,4 @@
+PREFIX res: <http://dbpedia.org/resource/>
 prefix : <https://api-tuner.described.at/test#http-code/>
 PREFIX earl: <http://www.w3.org/ns/earl#>
 PREFIX tuner: <https://api-tuner.described.at/>
