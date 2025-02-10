@@ -3,6 +3,23 @@ prefix string: <http://www.w3.org/2000/10/swap/string#>
 prefix log: <http://www.w3.org/2000/10/swap/log#>
 
 {
+  ?expr tuner:assertThat ?msg .
+} <= {
+  (
+    ?expr
+    true
+    {
+      (
+        { ?msg log:rawType log:ForAll }
+        { ?expr^tuner:logFailedAssertion }
+        { ?msg^tuner:logFailedAssertion }
+      ) log:ifThenElseIn [].
+      true log:equalTo false .
+    }
+  ) log:ifThenElseIn [] .
+} .
+
+{
   ?res tuner:http_code ?value .
 } <= {
   ?res log:includes {
