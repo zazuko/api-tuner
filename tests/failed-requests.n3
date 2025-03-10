@@ -19,7 +19,7 @@ prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
   (
     { <#test>!<#req> tuner:response ?res }
     {
-      [] tuner:info "Expected failure" .
+      "Expected failure"^tuner:info .
       true log:equalTo false .
     }
     {

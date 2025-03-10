@@ -25,7 +25,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
   (
     { ?res tuner:header ( "Location" "foobar" ) }
     {
-      [] tuner:info "Expected assertion failure" .
+      "Expected assertion failure"^tuner:info .
       true log:equalTo false .
     }
     true
@@ -54,7 +54,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
   (
     { ?res tuner:header ( "content-type" "foobar" string:matches ) }
     {
-      [] tuner:info "Expected assertion failure" .
+      "Expected assertion failure"^tuner:info .
       true log:equalTo false .
     }
     true
