@@ -5,60 +5,60 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
-:casing
+<#casing>
   a earl:TestCase ;
   rdfs:label "Headers can be asserted case-insensitive" ;
 .
 
 # Configure a request
-:header-req
+<#header-req>
   a tuner:Request ;
   tuner:url <http://localhost:1080/location-header> ;
   tuner:method "POST" ;
 .
 
 {
-  :header-req tuner:response ?res .
+  <#header-req> tuner:response ?res .
 
   ?res tuner:header ( "Location" "http://foo.bar/baz" ) .
   ?res tuner:header ( "location" "http://foo.bar/baz" ) .
   (
     { ?res tuner:header ( "Location" "foobar" ) }
     {
-      "Expected assertion failure"^tuner:info .
+      [] tuner:info "Expected assertion failure" .
       true log:equalTo false .
     }
     true
   ) log:ifThenElseIn ?SCOPE .
 } => {
-  :casing earl:outcome earl:passed .
+  <#casing> earl:outcome earl:passed .
 } .
 
 ######################################################################
 
-:regex
+<#regex>
   a earl:TestCase ;
   rdfs:label "Headers can be asserted case-insensitive" ;
 .
 
-:exampleDotCom-req
+<#exampleDotCom-req>
   a tuner:Request ;
   tuner:url <http://localhost:1080/example.com> ;
   tuner:method "GET" ;
 .
 
 {
-  :exampleDotCom-req tuner:response ?res .
+  <#exampleDotCom-req> tuner:response ?res .
 
   ?res tuner:header ( "content-type" "text/.*" string:matches ) .
   (
     { ?res tuner:header ( "content-type" "foobar" string:matches ) }
     {
-      "Expected assertion failure"^tuner:info .
+      [] tuner:info "Expected assertion failure" .
       true log:equalTo false .
     }
     true
   ) log:ifThenElseIn ?SCOPE .
 } => {
-  :regex earl:outcome earl:passed .
+  <#regex> earl:outcome earl:passed .
 } .

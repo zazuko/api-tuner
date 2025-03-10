@@ -5,23 +5,23 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
-:inlineQueryParams
+<#inlineQueryParams>
   a earl:TestCase ;
   rdfs:label "GET with query params" ;
 .
 
-:inlineQueryParamsReq
+<#inlineQueryParamsReq>
   a tuner:Request ;
   tuner:url <http://localhost:1080/query-params-echo?foo=bar&baz=qux> ;
   tuner:method "GET" ;
 .
 
 {
-  :inlineQueryParamsReq tuner:response ?res .
+  <#inlineQueryParamsReq> tuner:response ?res .
 
   ?res tuner:http_code 200 .
   ?res tuner:header ( "X-Foo" "bar" ) .
   ?res tuner:header ( "X-Baz" "qux" ) .
 } => {
-  :inlineQueryParams earl:outcome earl:passed .
+  <#inlineQueryParams> earl:outcome earl:passed .
 } .

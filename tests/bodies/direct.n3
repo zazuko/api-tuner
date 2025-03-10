@@ -6,7 +6,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
-:fileRdfBodyTestCase
+<#fileRdfBodyTestCase>
   a earl:TestCase ;
   rdfs:label "Request with RDF from file (direct upload)" ;
   tuner:request [
@@ -18,12 +18,12 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 .
 
 {
-  :fileRdfBodyTestCase!tuner:request tuner:response ?res .
+  <#fileRdfBodyTestCase>!tuner:request tuner:response ?res .
 
   ?res tuner:http_code 200 .
   ?res!tuner:body log:includes {
     ex:foo ex:bar "baz" .
   } .
 } => {
-  :fileRdfBodyTestCase earl:outcome earl:passed .
+  <#fileRdfBodyTestCase> earl:outcome earl:passed .
 } .

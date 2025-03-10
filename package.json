@@ -25,8 +25,11 @@
     "@changesets/cli": "^2.27.12",
     "@jeswr/pretty-turtle": "^1.5.0",
     "@zazuko/env-node": "^2.1.4",
+    "is-absolute-url": "^4.0.1",
     "jsonld": "^8.3.3",
     "rdf-validate-shacl": "^0.5.6",
+    "replacestream": "^4.0.3",
+    "stream-concat": "^2.0.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {

@@ -46,13 +46,13 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
-:getExampleDotCom
+<#getExampleDotCom>
   a earl:TestCase ;
   rdfs:label "Simple GET test" ;
 .
 
 # Configure a request
-:req
+_:req
   a tuner:Request ;
   tuner:url <http://localhost:1080/example.com> ;
   tuner:method "GET" ;
@@ -60,7 +60,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
 {
   # Execute the request and capture its response
-  :req tuner:response ?res .
+  _:req tuner:response ?res .
 
   # Check the response status code and content type
   ?res tuner:http_code 200 ;
@@ -71,7 +71,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
   ?res!tuner:body string:contains "Example Domain" .
 } => {
   # Use te EARL vocabulary to assert the test passed
-  :getExampleDotCom earl:outcome earl:passed .
+  <#getExampleDotCom> earl:outcome earl:passed .
 } .
 ```
 

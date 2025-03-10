@@ -1,4 +1,3 @@
-prefix : <https://api-tuner.described.at/test#http-code/>
 PREFIX earl: <http://www.w3.org/ns/earl#>
 PREFIX tuner: <https://api-tuner.described.at/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -6,10 +5,10 @@ PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
 
-:
+<#test>
   a earl:TestCase ;
   rdfs:label "Test dailed request" ;
-  tuner:request [
+  <#req> [
     a tuner:Request ;
     tuner:url <http://foo.bar/baz> ;
     tuner:method "GET" ;
@@ -18,9 +17,9 @@ prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
 
 {
   (
-    { :!tuner:request tuner:response ?res }
+    { <#test>!<#req> tuner:response ?res }
     {
-      "Expected failure"^tuner:info .
+      [] tuner:info "Expected failure" .
       true log:equalTo false .
     }
     {
@@ -28,5 +27,5 @@ prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
     }
   ) log:ifThenElseIn [] .
 } => {
-  : earl:outcome earl:passed .
+  <#test> earl:outcome earl:passed .
 } .
