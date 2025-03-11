@@ -6,7 +6,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
 <#getExampleDotCom>
   a earl:TestCase ;
-  rdfs:label "Simple GET test" ;
+  rdfs:label "Test GET with relative URL" ;
   <#req> [
     a tuner:Request ;
     tuner:url <example.com> ;
