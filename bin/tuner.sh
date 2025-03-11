@@ -80,6 +80,9 @@ if [ "$SILENT" != true ]; then
 fi
 
 set -o pipefail
-node "${SCRIPT_PATH}/../lib/merge-test-cases.js" --base-iri "$BASE_IRI" -- "${PATHS[@]}" \
-  | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 - \
-  | $SUMMARY
+for path in "${PATHS[@]}"; do
+  (
+    node "${SCRIPT_PATH}/../lib/parse-test-case.js" --base-iri "$BASE_IRI" -- "${path}" \
+      | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 -
+  ) &
+done | $SUMMARY
