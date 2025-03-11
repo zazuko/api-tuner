@@ -1,4 +1,3 @@
-prefix : <https://api-tuner.described.at/test#query-params/>
 PREFIX earl: <http://www.w3.org/ns/earl#>
 PREFIX tuner: <https://api-tuner.described.at/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

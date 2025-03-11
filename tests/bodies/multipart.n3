@@ -1,5 +1,4 @@
 PREFIX ex: <http://example.org/>
-prefix : <https://api-tuner.described.at/test#bodies/>
 PREFIX earl: <http://www.w3.org/ns/earl#>
 PREFIX tuner: <https://api-tuner.described.at/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
