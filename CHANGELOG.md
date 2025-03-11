@@ -1,5 +1,15 @@
 # api-tuner
 
+## 0.2.0
+
+### Minor Changes
+
+- d8e9772: Change how tests are parsed to assume that hash URLs are resolved against test source's `file://` URL and everything else requires `--base-iri`
+
+### Patch Changes
+
+- 0907960: Updated eye to v11.10.0
+
 ## 0.1.4
 
 ### Patch Changes
