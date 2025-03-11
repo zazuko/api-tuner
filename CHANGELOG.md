@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.2.1
+
+### Patch Changes
+
+- 6bf7006: Run tests sequentially
+
 ## 0.2.0
 
 ### Minor Changes
