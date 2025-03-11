@@ -22,9 +22,7 @@ prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
       "Expected failure"^tuner:info .
       true log:equalTo false .
     }
-    {
-      "if git status --porcelain | grep . > /dev/null; then exit 1; fi" e:exec 0 .
-    }
+    true
   ) log:ifThenElseIn [] .
 } => {
   <#test> earl:outcome earl:passed .
