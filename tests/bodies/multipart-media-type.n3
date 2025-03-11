@@ -1,12 +1,11 @@
 PREFIX ex: <http://example.org/>
-prefix : <https://api-tuner.described.at/test#bodies/>
 PREFIX earl: <http://www.w3.org/ns/earl#>
 PREFIX tuner: <https://api-tuner.described.at/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
-:multiPartBodyTestCase
+<#multiPartBodyTestCase>
   a earl:TestCase ;
   rdfs:label "Multipart form upload" ;
   tuner:request [
@@ -20,7 +19,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 .
 
 {
-  :multiPartBodyTestCase!tuner:request tuner:response ?res .
+  <#multiPartBodyTestCase>!tuner:request tuner:response ?res .
 
   ?res tuner:http_code 200 .
 
@@ -28,5 +27,5 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
     string:matches 'Content-Disposition: form-data; name=.upload.; filename=.foobar.ttl.\r\nContent-Type: text/turtle' ;
   .
 } => {
-  :multiPartBodyTestCase earl:outcome earl:passed .
+  <#multiPartBodyTestCase> earl:outcome earl:passed .
 } .

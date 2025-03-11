@@ -6,20 +6,20 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
-:
+<#test-case>
   a earl:TestCase ;
   rdfs:label "Test assertion on status code" ;
 .
 
 # Configure a request
-:req
+_:req
   a tuner:Request ;
   tuner:url <http://localhost:1080/example.com> ;
   tuner:method "GET" ;
 .
 
 {
-  :req tuner:response ?res .
+  _:req tuner:response ?res .
 
   ?res tuner:http_code 200 .
 
@@ -32,5 +32,5 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
     true
   ) log:ifThenElseIn ?SCOPE .
 } => {
-  : earl:outcome earl:passed .
+  <#test-case> earl:outcome earl:passed .
 } .

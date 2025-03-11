@@ -79,14 +79,10 @@ if [ "$SILENT" != true ]; then
   ARGS="$ARGS ${SCRIPT_PATH}/../logging/info.n3"
 fi
 
-MERGED="$(mktemp)"
-if [ -n "$BASE_IRI" ]; then
-  echo "base <$BASE_IRI>" > "$MERGED"
-fi
-
-for path in "${PATHS[@]}"; do
-  cat "$path" >> "$MERGED"
-done
-
 set -o pipefail
-$eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 "${MERGED}" | $SUMMARY
+for path in "${PATHS[@]}"; do
+  (
+    node "${SCRIPT_PATH}/../lib/parse-test-case.js" --base-iri "$BASE_IRI" -- "${path}" \
+      | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 -
+  ) &
+done | $SUMMARY

@@ -22,16 +22,30 @@ prefix log: <http://www.w3.org/2000/10/swap/log#>
 {
   ?res tuner:http_code ?value .
 } <= {
+ ( ?res tuner:http_code ?value ) <#curl-field> [] .
+} .
+
+{
+  ?res tuner:url.host ?value .
+} <= {
+  ( ?res tuner:url.host ?value ) <#curl-field> [] .
+} .
+
+{
+  ( ?res ?prop ?value ) <#curl-field> [] .
+} <= {
   ?res log:includes {
     [] a tuner:Response ;
-    tuner:http_code ?actualValue .
+    ?prop ?actualValue .
   } .
+
+  ?prop log:localName ?localName .
 
   (
     { ?actualValue log:equalTo ?value }
     true
     {
-      ("Expected status code " ?value " but got " ?actualValue)!string:concatenation^tuner:info .
+      ("Expected " ?localName " " ?value " but got " ?actualValue)!string:concatenation^tuner:info .
       true log:equalTo false .
     }
   ) log:ifThenElseIn ?SCOPE .
