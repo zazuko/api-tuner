@@ -17,7 +17,8 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 {
   <#getExampleDotCom>!<#req> tuner:response ?res .
 
-  ?res tuner:http_code 200 ;
+  ?res tuner:url.host "localhost" ;
+    tuner:http_code 200 ;
     tuner:header ( "content-type" "text/html" ) ;
   .
 
