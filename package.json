@@ -12,6 +12,7 @@
     "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=eye",
     "prepare": "husky",
     "lint": "eslint . --quiet --ignore-path .gitignore",
+    "pretest": "docker compose up -d",
     "test": "./bin/tuner.sh tests/*.n3 tests/**/*.n3 --base-iri http://localhost:1080/",
     "release": "changeset publish"
   },
