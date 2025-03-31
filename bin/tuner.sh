@@ -90,6 +90,6 @@ set -o pipefail
 for path in "${PATHS[@]}"; do
   (
     node "${SCRIPT_PATH}/../lib/parse-test-case.js" --base-iri "$BASE_IRI" -- "${path}" \
-      | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 "${LIBS[*]}" -
+      | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 ${LIBS[@]:+"${LIBS[*]}"} -
   ) ;
 done | $SUMMARY
