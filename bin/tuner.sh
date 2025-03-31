@@ -15,6 +15,7 @@ function version() {
    echo "Usage: api-tuner [options] <path>..."
    echo ""
    echo "Options:"
+   echo "  --lib <path>       Specify rules to include in all tests"
    echo "  --silent           Less output"
    echo "  --debug            Enable debug output"
    echo "  --raw              Output raw results from eye"
@@ -28,6 +29,7 @@ BASE_IRI=""
 DEBUG=false
 SUMMARY="node ${SCRIPT_PATH}/../lib/summarise-results.js --summary"
 PATHS=()
+LIBS=()
 # USAGE: ./tuner.sh --debug --version ...paths
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -56,6 +58,11 @@ while [ $# -gt 0 ]; do
       usage
       exit 0
       ;;
+    --lib)
+      LIBS+=("$2")
+      shift
+      shift
+      ;;
     *)
       PATHS+=("$1")
       shift
@@ -83,6 +90,6 @@ set -o pipefail
 for path in "${PATHS[@]}"; do
   (
     node "${SCRIPT_PATH}/../lib/parse-test-case.js" --base-iri "$BASE_IRI" -- "${path}" \
-      | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 -
+      | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 "${LIBS[*]}" -
   ) ;
 done | $SUMMARY
