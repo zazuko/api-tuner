@@ -27,6 +27,7 @@
 Usage: api-tuner [options] <path>...
 
 Options:
+  --lib <path>       Specify rules to include in all tests
   --silent           Less output
   --debug            Enable debug output
   --raw              Output raw results from eye
