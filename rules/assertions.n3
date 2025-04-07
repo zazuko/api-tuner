@@ -1,3 +1,4 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX tuner: <https://api-tuner.described.at/>
 prefix string: <http://www.w3.org/2000/10/swap/string#>
 prefix log: <http://www.w3.org/2000/10/swap/log#>
@@ -10,9 +11,9 @@ prefix log: <http://www.w3.org/2000/10/swap/log#>
     true
     {
       (
-        { ?msg log:rawType log:ForAll }
-        { ?expr^tuner:logFailedAssertion }
+        { ?msg!log:rawType list:in ( log:Literal rdf:List ) }
         { ?msg^tuner:logFailedAssertion }
+        { ?expr^tuner:logFailedAssertion }
       ) log:ifThenElseIn [].
       true log:equalTo false .
     }
