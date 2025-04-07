@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.2.3
+
+### Patch Changes
+
+- 3db9152: `tuner:assertThat` sometimes did not write the expected message
+
 ## 0.2.2
 
 ### Patch Changes
