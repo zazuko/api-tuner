@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.2.4
+
+### Patch Changes
+
+- 9dc894c: Fix the fix from 0.2.3
+
 ## 0.2.3
 
 ### Patch Changes
