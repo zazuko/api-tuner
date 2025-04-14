@@ -27,13 +27,14 @@
 Usage: api-tuner [options] <path>...
 
 Options:
-  --lib <path>       Specify rules to include in all tests
+  --lib <path>       Specify rules to include in all tests. Can be used multiple times. Make sure to surround globs in quotes to prevent expansion.
   --silent           Less output
   --debug            Enable debug output
   --raw              Output raw results from eye
   --base-iri <iri>   Specify the base IRI for parsing the test case files
   --version          Show version information
   --help             Show this help message
+
 ```
 
 ## Example

@@ -15,7 +15,7 @@ function version() {
    echo "Usage: api-tuner [options] <path>..."
    echo ""
    echo "Options:"
-   echo "  --lib <path>       Specify rules to include in all tests"
+   echo "  --lib <path>       Specify rules to include in all tests. Can be used multiple times. Make sure to surround globs in quotes to prevent expansion."
    echo "  --silent           Less output"
    echo "  --debug            Enable debug output"
    echo "  --raw              Output raw results from eye"
@@ -90,6 +90,6 @@ set -o pipefail
 for path in "${PATHS[@]}"; do
   (
     node "${SCRIPT_PATH}/../lib/parse-test-case.js" --base-iri "$BASE_IRI" -- "${path}" \
-      | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 ${LIBS[@]:+"${LIBS[*]}"} -
+      | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 ${LIBS[@]:+${LIBS[*]}} -
   ) ;
 done | $SUMMARY
