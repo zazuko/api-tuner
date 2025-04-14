@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.2.5
+
+### Patch Changes
+
+- 85e82c3: `--lib` globs were not correctly expanded
+
 ## 0.2.4
 
 ### Patch Changes
