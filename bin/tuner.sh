@@ -24,6 +24,7 @@ function version() {
    echo "  --help             Show this help message"
  }
 
+PARALLEL=true
 SILENT=false
 BASE_IRI=""
 DEBUG=false
@@ -48,6 +49,10 @@ while [ $# -gt 0 ]; do
     --base-iri)
       BASE_IRI="$2"
       shift
+      shift
+      ;;
+    --no-parallel)
+      PARALLEL=false
       shift
       ;;
     --version)
@@ -87,9 +92,30 @@ if [ "$SILENT" != true ]; then
 fi
 
 set -o pipefail
-for path in "${PATHS[@]}"; do
-  (
-    node "${SCRIPT_PATH}/../lib/parse-test-case.js" --base-iri "$BASE_IRI" -- "${path}" \
-      | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 ${LIBS[@]:+${LIBS[*]}} -
-  ) ;
-done | $SUMMARY
+process_path() {
+  local path="$1"
+  if [ "$SILENT" != true ] & [ $PARALLEL == false ]; then
+    echo "" >&2
+    echo "⚡️ RUNNING  <file://$(realpath "$path")>" >&2
+  fi
+  node "${SCRIPT_PATH}/../lib/parse-test-case.js" --base-iri "$BASE_IRI" -- "${path}" \
+    | $eye $ARGS "${SCRIPT_PATH}"/../rules/*.n3 ${LIBS[@]:+${LIBS[*]}} - \
+    2> >(while read -r line; do
+      echo "$line" | sed -E 's/^"INFO" TRACE "(.*)"/ℹ️ \1/; s/^"DEBUG" TRACE "(.*)"/🐞 \1/' >&2
+    done)
+}
+
+
+# if parallel
+if [ "$PARALLEL" = true ]; then
+  # run in parallel
+  for path in "${PATHS[@]}"; do
+    process_path "$path" &
+  done
+  wait
+else
+  # run sequentially
+  for path in "${PATHS[@]}"; do
+    process_path "$path"
+  done
+fi | $SUMMARY
