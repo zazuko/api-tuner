@@ -1,5 +1,12 @@
 # api-tuner
 
+## 0.2.6
+
+### Patch Changes
+
+- eb209a8: Rewrite eye trace lines for nicer output
+- eb209a8: Added `--no-parallel` option to make it easier to look at logs
+
 ## 0.2.5
 
 ### Patch Changes
