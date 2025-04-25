@@ -14,6 +14,7 @@
     "lint": "eslint . --quiet --ignore-path .gitignore",
     "pretest": "docker compose up -d",
     "test": "./bin/tuner.sh tests/*.n3 tests/**/*.n3 --base-iri http://localhost:1080/",
+    "prepack": "tsc",
     "release": "changeset publish"
   },
   "files": [
@@ -26,21 +27,28 @@
     "@changesets/cli": "^2.27.12",
     "@jeswr/pretty-turtle": "^1.5.0",
     "@zazuko/env-node": "^2.1.4",
+    "commander": "^13.1.0",
+    "get-stream": "^9.0.1",
     "is-absolute-url": "^4.0.1",
     "jsonld": "^8.3.3",
     "rdf-validate-shacl": "^0.5.6",
-    "replacestream": "^4.0.3",
-    "stream-concat": "^2.0.0",
-    "yargs": "^17.7.2"
+    "replacestream": "^4.0.3"
   },
   "devDependencies": {
     "@rdfjs/types": "^1",
     "@tpluscode/eslint-config": "^0.5.0",
     "@types/jsonld": "^1.5.15",
     "@types/rdf-validate-shacl": "^0.4.9",
+    "@types/replacestream": "^4.0.4",
     "@types/yargs": "^17.0.33",
+    "@typescript-eslint/eslint-plugin": "^7",
+    "@typescript-eslint/parser": "^7",
+    "eslint": "^8.57.1",
+    "eslint-import-resolver-typescript": "^4.3.4",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3"
+    "lint-staged": "^15.4.3",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
   },
   "lint-staged": {
     "*.{js,ts}": [
