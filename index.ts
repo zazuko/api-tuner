@@ -100,9 +100,6 @@ const testSuites = program.args.map(async (path) => {
   const absolutePath = resolve(process.cwd(), path)
 
   const result = await processPath(path)
-
-  const suiteHeader = options.silent ? '' : `\n⚡️ SUITE   <file://${absolutePath}>\n`
-
   const summaryPassThrough = new PassThrough()
   const rawPassThrough = new PassThrough()
 
@@ -112,12 +109,8 @@ const testSuites = program.args.map(async (path) => {
   const validationResult = await summariseResults(summaryPassThrough)
 
   if (options.raw) {
-    process.stdout.write(suiteHeader + await getStream(rawPassThrough))
-  } else {
-    const stderr = await getStream(result.stderr)
-    process.stderr.write(suiteHeader + stderr.replace(/"([^"]*)" TRACE ("([^"]*)")?/gm, (_, level: keyof typeof levelIcon, quoted, text) => {
-      return `${levelIcon[level]} ${text || ''}`
-    }))
+    const header = options.silent ? '' : `\n⚡️ SUITE   <file://${absolutePath}>\n`
+    process.stdout.write(header + await getStream(rawPassThrough))
   }
 
   if (!result.success) {
@@ -127,8 +120,18 @@ const testSuites = program.args.map(async (path) => {
     }
   }
 
+  let summary = `\n🔎 SUITE   <file://${absolutePath}>\n`
+  if (!validationResult.success) {
+    const stderr = await getStream(result.stderr)
+    summary += stderr.replace(/"([^"]*)" TRACE ("([^"]*)")?/gm, (_, level: keyof typeof levelIcon, quoted, text) => {
+      return `${levelIcon[level]} ${text || ''}`
+    })
+  }
+
+  summary += validationResult.summary
+
   return {
-    summary: `\n🔎 SUITE   <file://${absolutePath}>\n${validationResult.summary}`,
+    summary,
     success: validationResult.success,
   }
 })
