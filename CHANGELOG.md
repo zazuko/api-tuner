@@ -1,5 +1,15 @@
 # api-tuner
 
+## 0.3.0
+
+### Minor Changes
+
+- 337f523: `--base-iri` is now required
+
+### Patch Changes
+
+- 337f523: Rewrite main script to JS
+
 ## 0.2.6
 
 ### Patch Changes
