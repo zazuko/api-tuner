@@ -55,7 +55,7 @@ const rulesPath = url.fileURLToPath(new URL('rules/*.n3', import.meta.url))
 const levelIcon = {
   INFO: 'ℹ️',
   DEBUG: '🐞',
-  'Failed assertion': '❌',
+  'Failed assertion': '❌ Failed assertion',
 } as const
 
 interface EyeProcessResult {
@@ -115,8 +115,8 @@ const testSuites = program.args.map(async (path) => {
     process.stdout.write(suiteHeader + await getStream(rawPassThrough))
   } else {
     const stderr = await getStream(result.stderr)
-    process.stderr.write(suiteHeader + stderr.replace(/"(\w+)" TRACE "(.*)"/g, (_, level: keyof typeof levelIcon, text) => {
-      return `${levelIcon[level]} ${text}`
+    process.stderr.write(suiteHeader + stderr.replace(/"([^"]*)" TRACE ("([^"]*)")?/gm, (_, level: keyof typeof levelIcon, quoted, text) => {
+      return `${levelIcon[level]} ${text || ''}`
     }))
   }
 
