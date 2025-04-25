@@ -18,9 +18,12 @@
     "release": "changeset publish"
   },
   "files": [
-    "bin/tuner.sh",
+    "bin",
     "logging",
-    "lib",
+    "lib/*.js",
+    "lib/*.txt",
+    "lib/*.ttl",
+    "lib/*.sh",
     "rules"
   ],
   "dependencies": {

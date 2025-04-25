@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
+PWD=$(pwd)
+
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd "$SCRIPT_DIR" || exit
 
 # find JS entrypoint
-tuner="$SCRIPT_DIR/index.js"
+tuner=$(node -e "console.log(require.resolve('api-tuner/bin/index.js'))" 2> /dev/null)
+
+cd "$PWD" || exit
 
 # if tsx exists in path
 if command -v tsx > /dev/null 2>&1
