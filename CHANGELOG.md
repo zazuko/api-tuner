@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.3.2
+
+### Patch Changes
+
+- acab1de: Temporary files are written to actual temporary directory
+
 ## 0.3.1
 
 ### Patch Changes
