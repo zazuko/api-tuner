@@ -1,5 +1,15 @@
 # api-tuner
 
+## 0.3.1
+
+### Patch Changes
+
+- 3127d53: Failed assertion were not nicely rewritten
+- 703310d: Report failed test script (fixes #22)
+- 8ffb6ad: Fixed packaging
+- fb85dd3: Display eye logs only when tests fail
+- a1695f3: `--lib` was ignored
+
 ## 0.3.0
 
 ### Minor Changes
