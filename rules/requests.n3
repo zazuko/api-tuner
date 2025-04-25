@@ -70,7 +70,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
     } .
 
     (
-      "node " "lib/merge-curl-output.js"!file:libPath " "
+      "bin/merge-curl-output.sh"!file:libPath " "
       ?responseBodyFile
       " > " ?responseFile
     )!string:concatenation!e:exec .
