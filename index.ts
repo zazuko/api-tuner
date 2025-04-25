@@ -12,7 +12,7 @@ const eyePvmPath = url.fileURLToPath(new URL('eye/lib/eye.pvm', import.meta.url)
 
 program
   .name('api-tuner')
-  .option('--lib <lib>', 'Specify rules to include in all tests. Can be used multiple times. Make sure to surround globs in quotes to prevent expansion.')
+  .option('--lib <lib>', 'Specify rules to include in all tests. Can be used multiple times. Make sure to surround globs in quotes to prevent expansion.', (lib, arr: string[]) => [...arr, lib], [])
   .option('--silent', 'Less output', false)
   .option('--debug', 'Enable debug output', false)
   .option('--raw', 'Output raw results from eyes')
@@ -73,6 +73,7 @@ async function processPath(path: string) {
       '--',
       ...eyeArgs,
       rulesPath,
+      ...options.lib,
       '-',
     ], {
       shell: true,
