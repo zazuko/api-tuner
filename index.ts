@@ -120,9 +120,16 @@ const testSuites = program.args.map(async (path) => {
     }))
   }
 
+  if (!result.success) {
+    return {
+      summary: `\n🔎 SUITE   <file://${absolutePath}>\n❌  FAIL   Test script failed`,
+      success: false,
+    }
+  }
+
   return {
     summary: `\n🔎 SUITE   <file://${absolutePath}>\n${validationResult.summary}`,
-    success: result.success && validationResult.success,
+    success: validationResult.success,
   }
 })
 
