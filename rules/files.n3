@@ -13,9 +13,12 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
   ( ?suffix ) file:temp ?path .
 } <= {
   ?uri log:uri ( "urn:rand:" ( 1000 )!e:random )!string:concatenation .
+  # log:shell captures the traling newline
+  ( "mktemp -d"!log:shell "\n" "" ) string:replace ?tempDir .
 
   (
-    #"/tmp/"
+    ?tempDir
+    "/"
     ?uri!log:uuid
     ?suffix
   ) string:concatenation ?path .
