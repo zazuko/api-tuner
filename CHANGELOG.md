@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.3.3
+
+### Patch Changes
+
+- 5ffaf1f: Script looked for test files in wrong directory
+
 ## 0.3.2
 
 ### Patch Changes
