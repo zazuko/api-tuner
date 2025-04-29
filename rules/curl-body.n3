@@ -54,7 +54,7 @@ prefix math: <http://www.w3.org/2000/10/swap/math#>
 } <= {
   {
     ?value log:rawType log:Literal .
-    ( " -F " ?name "=" ?value ) string:concatenation ?formField .
+    ( " -F " ?name "='" ?value "'" ) string:concatenation ?formField .
   } log:callWithCut true .
 } .
 
