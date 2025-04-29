@@ -1,5 +1,12 @@
 # api-tuner
 
+## 0.3.4
+
+### Patch Changes
+
+- 5fb8cb9: `tuner:query` to set query params without altering the request URL
+- e8b60be: Arguments passed with `-F` were not properly quoted
+
 ## 0.3.3
 
 ### Patch Changes
