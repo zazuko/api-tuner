@@ -1,0 +1,8 @@
+prefix tuner: <https://api-tuner.described.at/>
+prefix string: <http://www.w3.org/2000/10/swap/string#>
+
+{
+  (?fieldName ?fieldValue) tuner:headerArg ?curlArg .
+} <= {
+  ( " -H '" ?fieldName ":" ?fieldValue "'" ) string:concatenation ?curlArg .
+} .

@@ -1,0 +1,8 @@
+prefix tuner: <https://api-tuner.described.at/>
+prefix string: <http://www.w3.org/2000/10/swap/string#>
+
+{
+  (?name ?value) tuner:queryParamArg ?curlArg .
+} <= {
+  ( " --url-query '" ?name "=" ?value "'" ) string:concatenation ?curlArg .
+} .
