@@ -1,0 +1,28 @@
+PREFIX earl: <http://www.w3.org/ns/earl#>
+PREFIX tuner: <https://api-tuner.described.at/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX log: <http://www.w3.org/2000/10/swap/log#>
+PREFIX string: <http://www.w3.org/2000/10/swap/string#>
+
+<#verboseQueryParams>
+  a earl:TestCase ;
+  rdfs:label "GET with query params (verbose syntax)" ;
+.
+
+<#verboseQueryParams>
+  a tuner:Request ;
+  tuner:url <http://localhost:1080/query-params-echo> ;
+  tuner:method "GET" ;
+  tuner:query ( "foo" "bar baz" ) ;
+  tuner:query ( "baz" "qux" ) ;
+.
+
+{
+  <#verboseQueryParams> tuner:response ?res .
+
+  ?res tuner:http_code 200 .
+  ?res tuner:header ( "X-Foo" "bar baz" ) .
+  ?res tuner:header ( "X-Baz" "qux" ) .
+} => {
+  <#verboseQueryParams> earl:outcome earl:passed .
+} .

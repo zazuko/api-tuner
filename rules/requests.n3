@@ -6,11 +6,7 @@ PREFIX tuner: <https://api-tuner.described.at/>
 prefix file: <http://www.w3.org/2000/10/swap/file#>
 prefix earl: <http://www.w3.org/ns/earl#>
 
-{
-  (?fieldName ?fieldValue) tuner:headerArg ?curlArg .
-} <= {
-  ( " -H '" ?fieldName ":" ?fieldValue "'" ) string:concatenation ?curlArg .
-} .
+
 
 {
   ?req tuner:response ?res .
@@ -34,6 +30,15 @@ prefix earl: <http://www.w3.org/ns/earl#>
     { ?headersArgs log:equalTo "" }
   ) log:ifThenElseIn [] .
 
+  (
+    { ?req tuner:query [] . }
+    {
+      ( ?queryParam { ?req tuner:query ?queryParam } ?queryParams ) log:collectAllIn [] .
+      ( ?queryParams tuner:queryParamArg )!list:map string:concatenation ?queryParamArgs .
+    }
+    { ?queryParamArgs log:equalTo "" }
+  ) log:ifThenElseIn [] .
+
   ?endpointUri log:uri ?endpoint .
 
   ( ?method " " ?endpoint )!string:concatenation^tuner:trace .
@@ -55,6 +60,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
       "curl -s -X " ?method " '" ?endpoint "'"
       ?headersArgs
       ?bodyArgs
+      ?queryParamArgs
       " -w @" ( "lib/curl-format.txt"!file:libPath )!string:concatenation
       " -o " ?responseBodyFile
       " > " ?responseHeadersFile
