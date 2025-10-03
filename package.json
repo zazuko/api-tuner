@@ -8,7 +8,7 @@
     "api-tuner": "./bin/tuner.sh"
   },
   "scripts": {
-    "download-eye": "EYE_VERSION=11.10.0 ./lib/download-eye.sh",
+    "download-eye": "EYE_VERSION=11.16.4 ./lib/download-eye.sh",
     "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=eye",
     "prepare": "husky",
     "lint": "eslint . --quiet --ignore-path .gitignore",
