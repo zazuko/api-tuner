@@ -45,10 +45,8 @@ if (options.debug) {
   eyeArgs.push(debugN3Path)
 }
 
-if (!options.silent) {
-  const infoN3Path = url.fileURLToPath(new URL('logging/info.n3', import.meta.url))
-  eyeArgs.push(infoN3Path)
-}
+const infoN3Path = url.fileURLToPath(new URL('logging/info.n3', import.meta.url))
+eyeArgs.push(infoN3Path)
 
 const rulesPath = url.fileURLToPath(new URL('rules/*.n3', import.meta.url))
 
@@ -121,7 +119,7 @@ const testSuites = program.args.map(async (path) => {
   }
 
   let summary = `\n🔎 SUITE   <file://${absolutePath}>\n`
-  if (!validationResult.success) {
+  if (!validationResult.success || !options.silent) {
     const stderr = await getStream(result.stderr)
     summary += stderr.replace(/"([^"]*)" TRACE ("([^"]*)")?/gm, (_, level: keyof typeof levelIcon, quoted, text) => {
       return `${levelIcon[level]} ${text || ''}`
