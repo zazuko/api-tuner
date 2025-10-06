@@ -1,5 +1,16 @@
 # api-tuner
 
+## 0.4.0
+
+### Minor Changes
+
+- baed07f: Introduces `tuner:formula` as object of `earl:TestCase`
+
+### Patch Changes
+
+- baed07f: Added `resource:getIn`, `resource:postIn`, `resource:putIn` helpers
+- a271634: Info messages were not shown unless a test case failed. Now they are displayed by default, if the `--silent` flag is set
+
 ## 0.3.4
 
 ### Patch Changes
