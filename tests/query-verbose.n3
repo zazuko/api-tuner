@@ -4,12 +4,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
-<#verboseQueryParams>
-  a earl:TestCase ;
-  rdfs:label "GET with query params (verbose syntax)" ;
-.
-
-<#verboseQueryParams>
+_:req
   a tuner:Request ;
   tuner:url <http://localhost:1080/query-params-echo> ;
   tuner:method "GET" ;
@@ -17,12 +12,14 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
   tuner:query ( "baz" "qux" ) ;
 .
 
-{
-  <#verboseQueryParams> tuner:response ?res .
+<#verboseQueryParams>
+  a earl:TestCase ;
+  rdfs:label "GET with query params (verbose syntax)" ;
+  tuner:formula {
+    _:req tuner:response ?res .
 
-  ?res tuner:http_code 200 .
-  ?res tuner:header ( "X-Foo" "bar baz" ) .
-  ?res tuner:header ( "X-Baz" "qux" ) .
-} => {
-  <#verboseQueryParams> earl:outcome earl:passed .
-} .
+    ?res tuner:http_code 200 .
+    ?res tuner:header ( "X-Foo" "bar baz" ) .
+    ?res tuner:header ( "X-Baz" "qux" ) .
+  } ;
+.

@@ -3,24 +3,16 @@ PREFIX tuner: <https://api-tuner.described.at/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
+PREFIX resource: <https://api-tuner.described.at/resource#>
 
 <#inlineQueryParams>
   a earl:TestCase ;
   rdfs:label "GET with query params" ;
+  tuner:formula {
+    ( <http://localhost:1080/query-params-echo?foo=bar&baz=qux> ?res ) resource:getIn []  .
+
+    ?res tuner:http_code 200 .
+    ?res tuner:header ( "X-Foo" "bar" ) .
+    ?res tuner:header ( "X-Baz" "qux" ) .
+  } ;
 .
-
-<#inlineQueryParamsReq>
-  a tuner:Request ;
-  tuner:url <http://localhost:1080/query-params-echo?foo=bar&baz=qux> ;
-  tuner:method "GET" ;
-.
-
-{
-  <#inlineQueryParamsReq> tuner:response ?res .
-
-  ?res tuner:http_code 200 .
-  ?res tuner:header ( "X-Foo" "bar" ) .
-  ?res tuner:header ( "X-Baz" "qux" ) .
-} => {
-  <#inlineQueryParams> earl:outcome earl:passed .
-} .
