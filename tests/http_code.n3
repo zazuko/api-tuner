@@ -1,36 +1,26 @@
-PREFIX res: <http://dbpedia.org/resource/>
 prefix : <https://api-tuner.described.at/test#http-code/>
 PREFIX earl: <http://www.w3.org/ns/earl#>
 PREFIX tuner: <https://api-tuner.described.at/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
+PREFIX resource: <https://api-tuner.described.at/resource#>
 
 <#test-case>
   a earl:TestCase ;
   rdfs:label "Test assertion on status code" ;
+  tuner:formula {
+    ( <http://localhost:1080/example.com> ?res ) resource:getIn [] .
+
+    ?res tuner:http_code 200 .
+
+    (
+      { ?res tuner:http_code 201 }
+      {
+        "Expected assertion failure"^tuner:info .
+        true log:equalTo false .
+      }
+      true
+    ) log:ifThenElseIn ?SCOPE .
+  } ;
 .
-
-# Configure a request
-_:req
-  a tuner:Request ;
-  tuner:url <http://localhost:1080/example.com> ;
-  tuner:method "GET" ;
-.
-
-{
-  _:req tuner:response ?res .
-
-  ?res tuner:http_code 200 .
-
-  (
-    { ?res tuner:http_code 201 }
-    {
-      "Expected assertion failure"^tuner:info .
-      true log:equalTo false .
-    }
-    true
-  ) log:ifThenElseIn ?SCOPE .
-} => {
-  <#test-case> earl:outcome earl:passed .
-} .

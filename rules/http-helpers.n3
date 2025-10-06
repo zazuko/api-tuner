@@ -1,0 +1,85 @@
+PREFIX string: <http://www.w3.org/2000/10/swap/string#>
+prefix resource: <https://api-tuner.described.at/resource#>
+prefix tuner: <https://api-tuner.described.at/>
+prefix log: <http://www.w3.org/2000/10/swap/log#>
+prefix graph: <http://www.w3.org/2000/10/swap/graph#>
+
+{
+  (?resource ?res) resource:getIn ?scope
+} <= {
+  ("GET" ?resource ?res) resource:requestIn ?scope .
+
+  ?res tuner:http_code 200 .
+} .
+
+{
+  (?resource ?body) resource:putIn ?scope
+} <= {
+  (?resource ?body ?res) resource:putIn ?scope .
+
+  ?res tuner:http_code 200 .
+} .
+
+{
+  (?resource ?body ?res) resource:putIn ?scope
+} <= {
+  ("PUT" ?resource ?body ?res) resource:requestIn ?scope
+} .
+
+{
+  (?resource ?res) resource:postIn ?scope
+} <= {
+  ("POST" ?resource ?res) resource:requestIn ?scope
+} .
+
+{
+  (?resource ?body ?res) resource:postIn ?scope
+} <= {
+  ("POST" ?resource ?body ?res) resource:requestIn ?scope
+} .
+
+{
+  (?method ?resource ?res) resource:requestIn ?scope
+} <= {
+  ({[
+      a tuner:Request ;
+        tuner:method ?method ;
+        tuner:url ?resource ;
+   ]} ?res) <#requestIn> ( ?scope ?id )
+} .
+
+{
+  (?method ?resource ?body ?res) resource:requestIn ?scope
+} <= {
+  ({[
+      a tuner:Request ;
+        tuner:method ?method ;
+        tuner:url ?resource ;
+        tuner:body ?body ;
+   ]} ?res) <#requestIn> ?scope
+} .
+
+{
+  (?g ?res) <#requestIn> ?scope
+} <= {
+  ?g log:includes {
+    ?req a tuner:Request ;
+         tuner:method ?method ;
+         tuner:url ?resource .
+  } .
+
+  ( <#request>!log:uri "?method=" ?method "?resource=" ?resource!log:uri ) string:concatenation ?idStr .
+  ?id log:uri ?idStr .
+  ({ ?scope ?id [] } false true) log:ifThenElseIn [].
+
+  ( ?g { ?scope ?id ?req } ) graph:union ?union .
+  true log:becomes ?union .
+
+  (
+    { ?scope!?id tuner:response ?res }
+    true
+    {
+      "Request failed"^tuner:info .
+    }
+  ) log:ifThenElseIn [] .
+} .

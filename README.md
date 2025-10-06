@@ -43,40 +43,30 @@ Create a test case file `test.n3`:
 
 ```turtle
 # test.n3
-PREFIX : <http://example.com/>
 PREFIX earl: <http://www.w3.org/ns/earl#>
 PREFIX tuner: <https://api-tuner.described.at/>
+prefix resource: <https://api-tuner.described.at/resource#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
 <#getExampleDotCom>
   a earl:TestCase ;
   rdfs:label "Simple GET test" ;
+  tuner:formula {
+    # Execute the request and capture its response
+    ( <http://localhost:1080/example.com> ?res ) resource:getIn [] .
+
+    # Check the response status code and content type
+    ?res tuner:http_code 200 ;
+      tuner:header ( "content-type" "text/html" ) ;
+    .
+
+    # Check the body contains the work "Example"
+    ?res tuner:body ?body .
+    ?body string:contains "Example Domain" .
+  } ;
 .
 
-# Configure a request
-_:req
-  a tuner:Request ;
-  tuner:url <http://localhost:1080/example.com> ;
-  tuner:method "GET" ;
-.
-
-{
-  # Execute the request and capture its response
-  _:req tuner:response ?res .
-
-  # Check the response status code and content type
-  ?res tuner:http_code 200 ;
-    tuner:header ( "content-type" "text/html" ) ;
-  .
-
-  # Check the body contains the work "Example"
-  ?res!tuner:body string:contains "Example Domain" .
-} => {
-  # Use te EARL vocabulary to assert the test passed
-  <#getExampleDotCom> earl:outcome earl:passed .
-} .
 ```
 
 Execute the test case:

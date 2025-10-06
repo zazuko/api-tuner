@@ -1,5 +1,6 @@
 PREFIX earl: <http://www.w3.org/ns/earl#>
 PREFIX tuner: <https://api-tuner.described.at/>
+prefix resource: <https://api-tuner.described.at/resource#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
@@ -7,22 +8,15 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 <#getExampleDotCom>
   a earl:TestCase ;
   rdfs:label "Test GET with relative URL" ;
-  <#req> [
-    a tuner:Request ;
-    tuner:url <example.com> ;
-    tuner:method "GET" ;
-  ] ;
+  tuner:formula {
+    (<example.com> ?res) resource:getIn [] .
+
+    ?res tuner:url.host "localhost" ;
+      tuner:http_code 200 ;
+      tuner:header ( "content-type" "text/html" ) ;
+    .
+
+    ?res tuner:body ?body .
+    ?body string:contains "Example Domain" .
+  } ;
 .
-
-{
-  <#getExampleDotCom>!<#req> tuner:response ?res .
-
-  ?res tuner:url.host "localhost" ;
-    tuner:http_code 200 ;
-    tuner:header ( "content-type" "text/html" ) ;
-  .
-
-  ?res!tuner:body string:contains "Example Domain" .
-} => {
-  <#getExampleDotCom> earl:outcome earl:passed .
-} .
