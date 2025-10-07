@@ -57,8 +57,20 @@ prefix log: <http://www.w3.org/2000/10/swap/log#>
   ?res tuner:body ?body .
 } <= {
   ?res log:includes {
-    [] a tuner:Response ; tuner:body ?body .
+    [] a tuner:Response ; tuner:body ?bodyPath .
   } .
+
+  (
+    {
+      ?bodyPath log:rawType log:Literal .
+    }
+    {
+      ("cat " ?bodyPath)!string:concatenation log:shell ?body .
+    }
+    {
+      ?bodyPath log:semantics ?body .
+    }
+  ) log:ifThenElseIn [] .
 } .
 
 {
