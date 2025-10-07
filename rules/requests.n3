@@ -6,8 +6,6 @@ PREFIX tuner: <https://api-tuner.described.at/>
 prefix file: <http://www.w3.org/2000/10/swap/file#>
 prefix earl: <http://www.w3.org/ns/earl#>
 
-
-
 {
   ?req tuner:response ?res .
 } <= {
@@ -85,7 +83,6 @@ prefix earl: <http://www.w3.org/ns/earl#>
     ?res^tuner:trace .
   } log:callWithCleanup {
     { ?responseHeadersFile!file:rm } log:callWithCleanup true .
-    { ?responseBodyFile!file:rm } log:callWithCleanup true .
     { ?responseFile!file:rm } log:callWithCleanup true .
   } .
 } .

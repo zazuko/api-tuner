@@ -1,5 +1,8 @@
 import * as fs from 'node:fs/promises'
 import { createReadStream } from 'node:fs'
+import { writeFile } from 'node:fs/promises'
+import type { Readable } from 'node:stream'
+import url from 'node:url'
 // eslint-disable-next-line import/default
 import jsonld from 'jsonld'
 import rdf from '@zazuko/env-node'
@@ -7,7 +10,7 @@ import { write } from '@jeswr/pretty-turtle'
 import type { DatasetCore, Quad } from '@rdfjs/types'
 
 declare module '@rdfjs/types' {
-  interface Stream extends AsyncIterable<Quad>{
+  interface Stream extends AsyncIterable<Quad> {
   }
 }
 
@@ -49,17 +52,11 @@ const ns = rdf.namespace('https://api-tuner.described.at/');
     parser = rdf.formats.parsers.get(contentType)
   }
   if (parser) {
-    const bodyGraph = rdf.blankNode()
-    const bodyStream = parser.import(createReadStream(bodyPath))
-    for await (const quad of bodyStream) {
-      response.dataset.add(rdf.quad(quad.subject, quad.predicate, quad.object, bodyGraph))
-    }
-    response.addOut(ns.body, bodyGraph)
+    const body = parser.import(createReadStream(bodyPath))
+    await writeFile(`${bodyPath}.nt`, rdf.formats.serializers.get('application/n-triples')!.import(body) as Readable)
+    response.addOut(ns.body, rdf.namedNode(url.pathToFileURL(`${bodyPath}.nt`).toString()))
   } else {
-    const body = await fs.readFile(bodyPath, 'utf-8')
-    if (body) {
-      response.addOut(ns.body, body)
-    }
+    response.addOut(ns.body, bodyPath)
   }
 
   const headers = Object.entries(headersJson).flatMap(([header, values]) =>
