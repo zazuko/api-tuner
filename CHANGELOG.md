@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.4.1
+
+### Patch Changes
+
+- fc667a6: Fixes an issue where blank nodes in response bodies would be interpreted as universally quantified variables.
+
 ## 0.4.0
 
 ### Minor Changes
