@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.4.2
+
+### Patch Changes
+
+- 743f3ef: Use node to download eye
+
 ## 0.4.1
 
 ### Patch Changes
