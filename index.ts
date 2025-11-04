@@ -1,14 +1,18 @@
 import * as url from 'node:url'
 import * as childProcess from 'node:child_process'
-import { PassThrough, type Readable } from 'node:stream'
-import { resolve } from 'node:path'
+import { PassThrough, Readable } from 'node:stream'
+import { resolve, dirname } from 'node:path'
 import { program } from 'commander'
 import getStream from 'get-stream'
+import mergeStreams from '@sindresorhus/merge-streams'
+import rdf from '@zazuko/env-node'
 import packageJson from './package.json' with { type: 'json' }
 import parseTestCase from './lib/parse-test-case.js'
 import summariseResults from './lib/summarise-results.js'
 
 const eyePvmPath = url.fileURLToPath(new URL('eye/lib/eye.pvm', import.meta.url))
+
+const tuner = rdf.namespace('https://api-tuner.described.at/')
 
 program
   .name('api-tuner')
@@ -64,7 +68,6 @@ interface EyeProcessResult {
 
 async function processPath(path: string) {
   return new Promise<EyeProcessResult>(resolve => {
-    const testCaseStream = parseTestCase(path, options.baseIri)
     const eyeProc = childProcess.spawn('swipl', [
       '-x',
       eyePvmPath,
@@ -77,7 +80,10 @@ async function processPath(path: string) {
       shell: true,
     })
 
-    testCaseStream.pipe(eyeProc.stdin)
+    mergeStreams([
+      parseTestCase(path, options.baseIri),
+      tunerParams({ path }),
+    ]).pipe(eyeProc.stdin)
 
     const stdout = new PassThrough()
     const stderr = new PassThrough()
@@ -92,6 +98,16 @@ async function processPath(path: string) {
     eyeProc.stdout.pipe(stdout)
     eyeProc.stderr.pipe(stderr)
   })
+}
+
+function tunerParams({ path }: { path: string }): Readable {
+  const rdfString = rdf.clownface()
+    .blankNode()
+    .addOut(tuner.scriptPath, dirname(resolve(path)))
+    .dataset
+    .toCanonical()
+
+  return Readable.from(rdfString)
 }
 
 const testSuites = program.args.map(async (path) => {
