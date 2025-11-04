@@ -1,5 +1,15 @@
 # api-tuner
 
+## 0.5.0
+
+### Minor Changes
+
+- 72786bf: File paths in multipart form data should be relative to the script source
+
+### Patch Changes
+
+- 6d72414: Wrap multipart field nams in quotes
+
 ## 0.4.2
 
 ### Patch Changes
