@@ -14,7 +14,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
     tuner:method "POST" ;
     tuner:body [
       tuner:form ( "upload" <file:tests/bodies/foobar.ttl> ) ;
-      tuner:form ( "foo" "bar" ) ;
+      tuner:form ( "foo[bar]" "bar" ) ;
    ] ;
   ]
 .
@@ -22,12 +22,15 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 {
   <#multiPartBodyTestCase>!tuner:request tuner:response ?res .
 
-  ?res tuner:http_code 200 .
+  ?res tuner:http_code 200 ; tuner:body ?body .
 
-  ?res!tuner:body
-    string:matches 'Content-Disposition: form-data; name=.upload.; filename=.foobar.ttl.' ;
-  #  string:matches 'Content-Disposition: form-data; name=.foo.;' ;
-  .
+  {
+    ?body string:matches 'Content-Disposition: form-data; name=.upload.; filename=.foobar.ttl.'
+  }!tuner:assertThat .
+
+  {
+    ?body string:matches 'Content-Disposition: form-data; name=.foo\\[bar\\].'
+  }!tuner:assertThat .
 } => {
   <#multiPartBodyTestCase> earl:outcome earl:passed .
 } .
