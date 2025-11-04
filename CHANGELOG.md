@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.5.1
+
+### Patch Changes
+
+- 475aec9: build(deps): bump tar from 7.5.1 to 7.5.2
+
 ## 0.5.0
 
 ### Minor Changes
