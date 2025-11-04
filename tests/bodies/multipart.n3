@@ -13,7 +13,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
     tuner:url <http://localhost:1080/body-multipart> ;
     tuner:method "POST" ;
     tuner:body [
-      tuner:form ( "upload" <file:tests/bodies/foobar.ttl> ) ;
+      tuner:form ( "upload" <file:foobar.ttl> ) ;
       tuner:form ( "foo[bar]" "bar" ) ;
    ] ;
   ]

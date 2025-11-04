@@ -12,7 +12,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
     a tuner:Request ;
     tuner:url <http://localhost:1080/body-echo> ;
     tuner:method "POST" ;
-    tuner:body <file:tests/bodies/foobar.ttl> ;
+    tuner:body <file:foobar.ttl> ;
   ]
 .
 
