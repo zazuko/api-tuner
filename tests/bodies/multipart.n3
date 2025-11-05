@@ -5,9 +5,9 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
-<#multiPartBodyTestCase>
-  a earl:TestCase ;
-  rdfs:label "Multipart form upload" ;
+<#fields>
+  #a earl:TestCase ;
+  rdfs:label "Multipart form upload - mixed fields" ;
   tuner:request [
     a tuner:Request ;
     tuner:url <http://localhost:1080/body-multipart> ;
@@ -16,21 +16,65 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
       tuner:form ( "upload" <file:foobar.ttl> ) ;
       tuner:form ( "foo[bar]" "bar" ) ;
    ] ;
-  ]
+  ] ;
+  tuner:formula {
+    <#fields> tuner:request ?req .
+    ?req tuner:response ?res .
+
+    ?res tuner:http_code 200 ; tuner:body ?body .
+
+    {
+     ?body string:matches 'Content-Disposition: form-data; name=.upload.; filename=.foobar.ttl.'
+    }!tuner:assertThat .
+
+    {
+      ?body string:matches 'Content-Disposition: form-data; name=.foo\\[bar\\].'
+    }!tuner:assertThat .
+  }
 .
 
-{
-  <#multiPartBodyTestCase>!tuner:request tuner:response ?res .
+<#fileWithMediaType>
+ # a earl:TestCase ;
+  rdfs:label "Multipart form upload - file with medaia type" ;
+  tuner:request [
+    a tuner:Request ;
+    tuner:url <http://localhost:1080/body-multipart> ;
+    tuner:method "POST" ;
+    tuner:body [
+      tuner:form ( "upload" <file:foobar.ttl> "text/turtle" ) ;
+   ] ;
+  ] ;
+  tuner:formula {
+    <#fileWithMediaType> tuner:request ?req .
+    ?req tuner:response ?res .
 
-  ?res tuner:http_code 200 ; tuner:body ?body .
+    ?res tuner:http_code 200 .
 
-  {
-    ?body string:matches 'Content-Disposition: form-data; name=.upload.; filename=.foobar.ttl.'
-  }!tuner:assertThat .
+    ?res tuner:body ?body .
+    {
+      ?body string:matches 'Content-Disposition: form-data; name=.upload.; filename=.foobar.ttl.\r\nContent-Type: text/turtle' .
+    }!tuner:assertThat .
+  } ;
+.
 
-  {
-    ?body string:matches 'Content-Disposition: form-data; name=.foo\\[bar\\].'
-  }!tuner:assertThat .
-} => {
-  <#multiPartBodyTestCase> earl:outcome earl:passed .
-} .
+<#fieldsRequestOnce>
+  a earl:TestCase ;
+  rdfs:label "Multipart form upload - file with medaia type" ;
+  tuner:request [
+    a tuner:Request ;
+    tuner:url <http://localhost:1080/body-only-once> ;
+    tuner:method "POST" ;
+    tuner:body [
+      tuner:form ( "foo" "foo" ) ;
+      tuner:form ( "bar" "bar" ) ;
+      tuner:form ( "baz" "baz" ) ;
+      tuner:form ( "qux" "qux" ) ;
+   ] ;
+  ] ;
+  tuner:formula {
+    <#fieldsRequestOnce> tuner:request ?req .
+    ?req tuner:response ?res .
+
+    ?res tuner:http_code 200 .
+  } ;
+.

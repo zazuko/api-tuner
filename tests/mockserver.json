@@ -1,6 +1,16 @@
 [
   {
     "httpRequest": {
+      "method": "GET",
+      "path": "/ping"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": "Hello, world!"
+    }
+  },
+  {
+    "httpRequest": {
       "method": "POST",
       "path": "/location-header"
     },
@@ -54,6 +64,18 @@
     "httpResponseTemplate": {
       "template": "{\"statusCode\": 200, \"body\": \"$request.body.replace('\"', '\\\"')\"}",
       "templateType": "VELOCITY"
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/body-only-once"
+    },
+    "httpResponse": {
+      "statusCode": 200
+    },
+    "times": {
+      "remainingTimes": 1
     }
   }
 ]
