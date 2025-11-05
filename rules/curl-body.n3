@@ -35,6 +35,9 @@ prefix math: <http://www.w3.org/2000/10/swap/math#>
 } <= {
   ?multipartBody!tuner:form!list:length math:greaterThan 0 .
 
+  ({ ?multipartBody tuner:done true } false true) log:ifThenElseIn ?SCOPE .
+  true log:becomes { ?multipartBody tuner:done true } .
+
   (
     ?formField
     {
