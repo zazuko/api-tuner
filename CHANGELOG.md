@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.5.2
+
+### Patch Changes
+
+- fac8a8f: When `tuner:body` was used, the request would be executed multiple times, once for each body field
+
 ## 0.5.1
 
 ### Patch Changes
