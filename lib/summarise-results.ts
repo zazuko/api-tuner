@@ -19,7 +19,7 @@ export default async (resultStream: Readable): Promise<Result> => {
     format: 'n3',
   })!)
 
-  const validationReport = validator.validate(data)
+  const validationReport = await validator.validate(data)
 
   const testCases = rdf.clownface({ dataset: data })
     .has(rdf.ns.rdf.type, rdf.ns.earl.TestCase)
