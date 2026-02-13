@@ -1,5 +1,15 @@
 # api-tuner
 
+## 0.5.3
+
+### Patch Changes
+
+- cfc36c1: Updated `rdf-validate-shacl` to v0.6
+- 7e6dbe1: Updated `jsonld` to v9
+- 7519810: Updated `@zazuko/env-node` to v3
+- 7519810: Updated `tar` to v7.5.7
+- 7519810: Updated `@jeswr/pretty-turtle` to v1.8.2
+
 ## 0.5.2
 
 ### Patch Changes
