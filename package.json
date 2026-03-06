@@ -38,7 +38,7 @@
     "jsonld": "^9",
     "rdf-validate-shacl": "^0.6.5",
     "replacestream": "^4.0.3",
-    "tar": "^7.5.7"
+    "tar": "^7.5.10"
   },
   "devDependencies": {
     "@rdfjs/types": "^2",
