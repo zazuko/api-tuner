@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.5.4
+
+### Patch Changes
+
+- d7708dd: Prefix temp files with `api-tuner`
+
 ## 0.5.3
 
 ### Patch Changes
