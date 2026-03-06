@@ -77,4 +77,20 @@ api-tuner test.n3
 
 ## More examples
 
-TBD
+### Debugging
+
+Setting the `--debug` flag will print verbose response information. The `--raw` flag will print
+the raw triples produced by the n3 rules.
+
+Additionally, you can inspect the raw response files, which are written to the system's temp directory. The are prefixed
+with `api-tuner`. Thus, you can list them with `ls -l "${TMPDIR:-/tmp}"/api-tuner*`, or upload to CI artifacts, as shown
+in the GitHub Workflow step example below.
+
+```yaml
+- if: failure()
+  name: upload api-tuner response data
+  uses: actions/upload-artifact@v7
+  with:
+    name: api-tuner-debug
+    path: '${{ runner.temp }}/api-tuner*'
+```

@@ -15,7 +15,7 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
 } <= {
   ?uri log:uri ( "urn:rand:" ( 1000 )!e:random )!string:concatenation .
   # log:shell captures the traling newline
-  ( "mktemp -d"!log:shell "\n" "" ) string:replace ?tempDir .
+  ( "mktemp -t api-tuner -d"!log:shell "\n" "" ) string:replace ?tempDir .
 
   (
     ?tempDir
