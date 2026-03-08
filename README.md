@@ -87,6 +87,9 @@ with `api-tuner`. Thus, you can list them with `ls -l "${TMPDIR:-/tmp}"/api-tune
 in the GitHub Workflow step example below.
 
 ```yaml
+- run: npx api-tuner ...
+  env:
+    TMPDIR: ${{ runner.temp }}
 - if: failure()
   name: upload api-tuner response data
   uses: actions/upload-artifact@v7
