@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.5.5
+
+### Patch Changes
+
+- e5c1ca2: Added `tuner:jsonPath` asserion
+
 ## 0.5.4
 
 ### Patch Changes
