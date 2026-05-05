@@ -31,6 +31,14 @@ prefix math: <http://www.w3.org/2000/10/swap/math#>
 } .
 
 {
+  ?literalBody </#body> ( ?curlArgs [] ) .
+} <= {
+  ?literalBody log:rawType log:Literal .
+
+  ( " -d '" ?literalBody "'" ) string:concatenation ?curlArgs .
+} .
+
+{
   ?multipartBody </#body> ( ?curlArgs [] ) .
 } <= {
   ?multipartBody!tuner:form!list:length math:greaterThan 0 .

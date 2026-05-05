@@ -77,5 +77,18 @@
     "times": {
       "remainingTimes": 1
     }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/json-echo",
+      "headers": {
+        "Content-Type": ["application/json.*"]
+      }
+    },
+    "httpResponseTemplate": {
+      "template": "{\"statusCode\": 200, \"headers\": { \"Content-Type\": \"application/json\" }, \"body\": \"$request.body\"}",
+      "templateType": "VELOCITY"
+    }
   }
 ]
