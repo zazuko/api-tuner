@@ -74,6 +74,31 @@ prefix log: <http://www.w3.org/2000/10/swap/log#>
 } .
 
 {
+  ?body tuner:jsonPath ( ?path ?expected ) .
+} <= {
+  ?body tuner:jsonPath ( ?path ?expected log:equalTo ) .
+} .
+
+{
+  ?body tuner:jsonPath ( ?path ?expected ?builtIn ) .
+} <= {
+  ?body log:rawType log:Literal .
+  ( "echo " ?body " | bin/jsonpath.sh '" ?path "' " )!string:concatenation log:shell ?actualRaw .
+
+  # remove surrounding quotes added by the shell
+  ( ( ?actualRaw '^\"' "")!string:replace '\"$' "") string:replace ?actual .
+
+  (
+    { ?actual ?builtIn ?expected }
+    true
+    {
+      ("Expected JSON path '" ?path "' to satisfy '" ?builtIn " " ?expected "' but got '" ?actual "'")!string:concatenation^tuner:info .
+      true log:equalTo false .
+    }
+  ) log:ifThenElseIn ?SCOPE .
+} .
+
+{
   ?res tuner:header ( ?name ?value ) .
 } <= {
   ?res tuner:header ( ?name ?value log:equalTo ) .

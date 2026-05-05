@@ -1,0 +1,30 @@
+PREFIX math: <http://www.w3.org/2000/10/swap/math#>
+PREFIX string: <http://www.w3.org/2000/10/swap/string#>
+PREFIX earl: <http://www.w3.org/ns/earl#>
+PREFIX tuner: <https://api-tuner.described.at/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX log: <http://www.w3.org/2000/10/swap/log#>
+
+<#jsonBodyTestCase>
+  a earl:TestCase ;
+  rdfs:label "Assertion of JSON body" ;
+  tuner:request [
+    a tuner:Request ;
+    tuner:url <http://localhost:1080/json-echo> ;
+    tuner:method "POST" ;
+    tuner:header ("Content-Type" "application/json") ;
+    tuner:body '{"foo": "bar", "baz": 42}' ;
+  ] ;
+  tuner:formula {
+    <#jsonBodyTestCase> tuner:request ?req .
+    ?req tuner:response ?res .
+
+    ?res tuner:http_code 200 .
+
+    # Assert JSON content using tuner:jsonPath
+    ?res tuner:body ?body .
+
+    ?body tuner:jsonPath ("$.foo" "bar") .
+    ?body tuner:jsonPath ("$.foo" "ba" string:contains) .
+    ?body tuner:jsonPath ("$.baz" 40 math:greaterThan) .
+  } .
