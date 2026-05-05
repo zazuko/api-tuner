@@ -22,6 +22,8 @@
 
 ## Usage
 
+See [RULES.md](RULES.md) for detailed documentation of the N3 vocabulary and rules.
+
 ```sh
 > api-tuner --help
 Usage: api-tuner [options] <path>...
@@ -76,6 +78,8 @@ api-tuner test.n3
 ```
 
 ## More examples
+
+See [RULES.md](RULES.md) for more examples and detailed documentation of the N3 rules.
 
 ### Debugging
 
