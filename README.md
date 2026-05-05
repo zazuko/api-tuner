@@ -226,6 +226,7 @@ Assert the presence and value of an HTTP header. Header names are case-insensiti
   ```
   ⚠️ Be careful when using `?res!log:includes` resource path shorthand which will not work inside `tuner:formula`. Please refer to [this discussion](https://github.com/eyereasoner/eye/issues/148#issuecomment-2810940959).
 
+<<<<<<< json-assertions
 - **JSON Path**: If the response is JSON, you can use `tuner:jsonPath` to assert values within the body.
   ```turtle
   ?res tuner:body ?body .
@@ -235,6 +236,8 @@ Assert the presence and value of an HTTP header. Header names are case-insensiti
   ?body tuner:jsonPath ( "$.baz" "42" string:contains ) .
   ```
 
+=======
+>>>>>>> master
 #### Generic Assertions
 
 Use `tuner:assertThat` to fail a test with a custom message if a condition is not met.
