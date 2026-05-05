@@ -3,6 +3,7 @@ PREFIX list: <http://www.w3.org/2000/10/swap/list#>
 PREFIX tuner: <https://api-tuner.described.at/>
 prefix string: <http://www.w3.org/2000/10/swap/string#>
 prefix log: <http://www.w3.org/2000/10/swap/log#>
+prefix file: <http://www.w3.org/2000/10/swap/file#>
 
 {
   ?expr tuner:assertThat ?msg .
@@ -83,7 +84,7 @@ prefix log: <http://www.w3.org/2000/10/swap/log#>
   ?body tuner:jsonPath ( ?path ?expected ?builtIn ) .
 } <= {
   ?body log:rawType log:Literal .
-  ( "echo " ?body " | bin/jsonpath.sh '" ?path "' " )!string:concatenation log:shell ?actualRaw .
+  ( "echo " ?body " | " "bin/jsonpath.sh"!file:libPath " '" ?path "' " )!string:concatenation log:shell ?actualRaw .
 
   # remove surrounding quotes added by the shell
   ( ( ?actualRaw '^\"' "")!string:replace '\"$' "") string:replace ?actual .
