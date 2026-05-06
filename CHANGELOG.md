@@ -1,5 +1,15 @@
 # api-tuner
 
+## 0.6.0
+
+### Minor Changes
+
+- af1a730: `tuner:jsonPath` changed to be used with the response itself, fixing JSON parsing issues
+
+### Patch Changes
+
+- 5883d13: Fixes issue where `bin/jsonpath.sh` would not be found using relative path
+
 ## 0.5.5
 
 ### Patch Changes
