@@ -75,16 +75,18 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
 } .
 
 {
-  ?body tuner:jsonPath ( ?path ?expected ) .
+  ?res tuner:jsonPath ( ?path ?expected ) .
 } <= {
-  ?body tuner:jsonPath ( ?path ?expected log:equalTo ) .
+  ?res tuner:jsonPath ( ?path ?expected log:equalTo ) .
 } .
 
 {
-  ?body tuner:jsonPath ( ?path ?expected ?builtIn ) .
+  ?res tuner:jsonPath ( ?path ?expected ?builtIn ) .
 } <= {
-  ?body log:rawType log:Literal .
-  ( "echo " ?body " | " "bin/jsonpath.sh"!file:libPath " '" ?path "' " )!string:concatenation log:shell ?actualRaw .
+  ?res log:includes {
+    [] a tuner:Response ; tuner:body ?bodyPath .
+  } .
+  ( "cat " ?bodyPath " | " "bin/jsonpath.sh"!file:libPath " '" ?path "' " )!string:concatenation log:shell ?actualRaw .
 
   # remove surrounding quotes added by the shell
   ( ( ?actualRaw '^\"' "")!string:replace '\"$' "") string:replace ?actual .
