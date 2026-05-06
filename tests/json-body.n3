@@ -22,9 +22,7 @@ PREFIX log: <http://www.w3.org/2000/10/swap/log#>
     ?res tuner:http_code 200 .
 
     # Assert JSON content using tuner:jsonPath
-    ?res tuner:body ?body .
-
-    ?body tuner:jsonPath ("$.foo" "bar") .
-    ?body tuner:jsonPath ("$.foo" "ba" string:contains) .
-    ?body tuner:jsonPath ("$.baz" 40 math:greaterThan) .
+    ?res tuner:jsonPath ("$.foo" "bar") .
+    ?res tuner:jsonPath ("$.foo" "ba" string:contains) .
+    ?res tuner:jsonPath ("$.baz" 40 math:greaterThan) .
   } .
