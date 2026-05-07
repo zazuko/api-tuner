@@ -188,6 +188,19 @@ Query parameters can be added to a request using `tuner:query`.
 ?req tuner:query ( "name" "value" ) .
 ```
 
+#### Shell Variables
+
+Values used in request URL, headers and query params are resolved from the shell environment.
+
+```turtle
+<#test> tuner:request [
+  a tuner:Request ;
+  tuner:url <http://example.com/api/$PATH> ;
+  tuner:header ( "X-Api-Key" "$API_KEY" ) ;
+  tuner:query ( "q" "$QUERY" ) ;
+] .
+```
+
 ### Assertions
 
 Assertions are performed on the `tuner:Response` object (usually captured in a variable like `?res`).
