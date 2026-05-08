@@ -8,8 +8,8 @@
     "api-tuner": "bin/tuner.sh"
   },
   "scripts": {
-    "download-eye": "EYE_VERSION=11.24.2 ./lib/download-eye.js",
-    "postinstall": "([ -d eye ] || npm run download-eye) && eye/install.sh --prefix=eye",
+    "download-eye": "EYE_VERSION=11.24.3 ./lib/download-eye.js",
+    "postinstall": "npm run download-eye && eye/install.sh --prefix=eye",
     "prepare": "husky",
     "lint": "eslint . --quiet --ignore-path .gitignore",
     "pre_test": "docker compose up -d && docker compose restart && npx wait-on http-get://localhost:1080/ping -t 10s",
