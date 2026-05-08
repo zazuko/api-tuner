@@ -1,3 +1,4 @@
+PREFIX math: <http://www.w3.org/2000/10/swap/math#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX list: <http://www.w3.org/2000/10/swap/list#>
 PREFIX tuner: <https://api-tuner.described.at/>
@@ -91,8 +92,11 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
   # remove surrounding quotes added by the shell
   ( ( ?actualRaw '^\"' "")!string:replace '\"$' "") string:replace ?actual .
 
+  ( ?actual ?builtIn ) math:normaliseLiteral ?actualNormalised .
+  ( ?expected ?builtIn ) math:normaliseLiteral ?expectedNormalised .
+
   (
-    { ?actual ?builtIn ?expected }
+    { ?actualNormalised ?builtIn ?expectedNormalised }
     true
     {
       ("Expected JSON path '" ?path "' to satisfy '" ?builtIn " " ?expected "' but got '" ?actual "'")!string:concatenation^tuner:info .
@@ -120,8 +124,11 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
     ] .
   } .
 
+  ( ?actualValue ?builtIn ) math:normaliseLiteral ?actualNormalised .
+  ( ?value ?builtIn ) math:normaliseLiteral ?expectedNormalised .
+
   (
-    { ?actualValue ?builtIn ?value }
+    { ?actualNormalised ?builtIn ?expectedNormalised }
     true
     {
       ("Expected header '" ?name "' '" ?value "' to satisfy '" ?builtIn "' but got '" ?actualValue "'")!string:concatenation^tuner:info .
