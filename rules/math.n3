@@ -1,0 +1,19 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX log: <http://www.w3.org/2000/10/swap/log#>
+prefix math: <http://www.w3.org/2000/10/swap/math#>
+prefix string: <http://www.w3.org/2000/10/swap/string#>
+
+# See https://github.com/eyereasoner/eye/issues/174#issuecomment-4405018796
+{
+  ( ?value ?builtIn ) math:normaliseLiteral ?normalised
+} <= {
+  (
+    {
+      ?builtIn!log:uri string:startsWith math:!log:uri
+    }
+    {
+      ( ?value xsd:decimal ) log:dtlit ?normalised
+    }
+    { ?value log:equalTo ?normalised }
+  ) log:ifThenElseIn ?SCOPE
+} .

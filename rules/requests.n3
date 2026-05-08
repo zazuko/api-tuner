@@ -55,7 +55,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
     ) log:ifThenElseIn [] .
 
     (
-      "curl -s -X " ?method " '" ?endpoint "'"
+      "curl -s -X " ?method ' "' ?endpoint '"'
       ?headersArgs
       ?bodyArgs
       ?queryParamArgs

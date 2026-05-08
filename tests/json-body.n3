@@ -10,7 +10,7 @@ PREFIX log: <http://www.w3.org/2000/10/swap/log#>
   rdfs:label "Assertion of JSON body" ;
   tuner:request [
     a tuner:Request ;
-    tuner:url <http://localhost:1080/json-echo> ;
+    tuner:url <http://localhost:1080/body-echo> ;
     tuner:method "POST" ;
     tuner:header ("Content-Type" "application/json") ;
     tuner:body '{"foo": "bar", "baz": 42}' ;

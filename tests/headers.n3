@@ -41,3 +41,20 @@ prefix resource: <https://api-tuner.described.at/resource#>
     ) log:ifThenElseIn ?SCOPE .
   }
 .
+
+<#shellVariables>
+  a earl:TestCase ;
+  rdfs:label "Headers can be injected from environment variables" ;
+  <#request> [
+    a tuner:Request ;
+    tuner:url <http://localhost:1080/headers-echo> ;
+    tuner:method "GET" ;
+    tuner:header ( "X-Foo" "$FOO" ) ;
+  ] ;
+  tuner:formula {
+    <#shellVariables> <#request> ?req .
+    ?req tuner:response ?res  .
+
+    ?res tuner:header ( "X-Foo" "BAR" ) .
+  }
+.
