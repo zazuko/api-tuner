@@ -58,7 +58,7 @@
       "path": "/body-echo"
     },
     "httpResponseTemplate": {
-      "template": "{\"statusCode\": 200, \"headers\": { \"Content-Type\": \"text/turtle\" }, \"body\": \"$request.body.replace('\"', '\\\"')\"}",
+      "template": "{\"statusCode\": 200, \"headers\": { \"Content-Type\": \"$request.headers['Content-Type'][0]\" }, \"body\": \"$request.body.replace('\"', '\\\"')\"}",
       "templateType": "VELOCITY"
     }
   },
@@ -85,19 +85,6 @@
     },
     "times": {
       "remainingTimes": 1
-    }
-  },
-  {
-    "httpRequest": {
-      "method": "POST",
-      "path": "/json-echo",
-      "headers": {
-        "Content-Type": ["application/json.*"]
-      }
-    },
-    "httpResponseTemplate": {
-      "template": "{\"statusCode\": 200, \"headers\": { \"Content-Type\": \"application/json\" }, \"body\": \"$request.body\"}",
-      "templateType": "VELOCITY"
     }
   }
 ]

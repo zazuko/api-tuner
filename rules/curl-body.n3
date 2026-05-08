@@ -34,8 +34,14 @@ prefix math: <http://www.w3.org/2000/10/swap/math#>
   ?literalBody </#body> ( ?curlArgs [] ) .
 } <= {
   ?literalBody log:rawType log:Literal .
+  () file:temp ?requestBodyFile .
 
-  ( " -d '" ?literalBody "'" ) string:concatenation ?curlArgs .
+  # Save body to file so that it can be used in the curl command reliably
+  (
+    "echo '" ?literalBody "' > " ?requestBodyFile
+  )!string:concatenation!e:exec .
+
+  ( " --data-binary @" ?requestBodyFile ) string:concatenation ?curlArgs .
 } .
 
 {
