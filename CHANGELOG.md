@@ -1,5 +1,13 @@
 # api-tuner
 
+## 0.6.1
+
+### Patch Changes
+
+- 7c67480: Fix math assertions when values would be plain literals
+- 7bbb1fc: Shell variables used in request URL, headers and query params are now resolved from the shell environment
+- 7c67480: Fix sending bodies
+
 ## 0.6.0
 
 ### Minor Changes
