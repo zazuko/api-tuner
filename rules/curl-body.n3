@@ -1,3 +1,4 @@
+PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 PREFIX list: <http://www.w3.org/2000/10/swap/list#>
 PREFIX tuner: <https://api-tuner.described.at/>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
@@ -64,6 +65,28 @@ prefix math: <http://www.w3.org/2000/10/swap/math#>
   (
     ?formFields!string:concatenation
   ) string:concatenation ?curlArgs .
+} .
+
+{
+  ?req </#formUrlencoded> ?bodyArgs
+} <= {
+  (
+    { ?req tuner:form [] . }
+    {
+      ( ?formField { ?req tuner:form ?formField } ?formFields ) log:collectAllIn [] .
+      ( ( ?formFields <#encodeFormField> )!list:map "&" ) string:join ?formData .
+      ( ' -d "' ?formData '"' ) string:concatenation ?bodyArgs .
+    }
+    { ?bodyArgs log:equalTo "" }
+  ) log:ifThenElseIn [] .
+} .
+
+{
+  ( ?name ?value ) <#encodeFormField> ?urlEncodedPair .
+} <= {
+  ( "node -e 'console.log(encodeURIComponent(\"" ?value "\"))'" )!string:concatenation log:shellTrimmed ?encoded .
+
+  ( ?name "=" ?encoded ) string:concatenation ?urlEncodedPair .
 } .
 
 {

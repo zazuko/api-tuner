@@ -1,0 +1,26 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX earl: <http://www.w3.org/ns/earl#>
+PREFIX tuner: <https://api-tuner.described.at/>
+prefix string: <http://www.w3.org/2000/10/swap/string#>
+
+<#formUrlencoded>
+  a earl:TestCase ;
+  rdfs:label "Sending application/x-www-form-urlencoded" ;
+  tuner:request [
+    a tuner:Request ;
+    tuner:url <http://localhost:1080/body-echo> ;
+    tuner:method "POST" ;
+    tuner:form ( "foo" "foo" ) ;
+    tuner:form ( "bar" "bar bar" ) ;
+    tuner:form ( "baz" "Ü" ) ;
+  ] ;
+  tuner:formula {
+    <#formUrlencoded> tuner:request ?req .
+    ?req tuner:response ?res .
+
+    ?res tuner:body ?body .
+    {
+      ?body string:matches 'foo=foo&bar=bar%20bar&baz=%C3%9C' .
+    }!tuner:assertThat .
+  } ;
+.
