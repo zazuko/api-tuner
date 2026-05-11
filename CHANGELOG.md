@@ -1,5 +1,12 @@
 # api-tuner
 
+## 0.6.2
+
+### Patch Changes
+
+- e9a5946: Added `tuner:basicAuth` request option
+- e9a5946: Log an assertion error message when an expected header is not present in the response
+
 ## 0.6.1
 
 ### Patch Changes
