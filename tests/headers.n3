@@ -58,3 +58,20 @@ prefix resource: <https://api-tuner.described.at/resource#>
     ?res tuner:header ( "X-Foo" "BAR" ) .
   }
 .
+
+<#basicAuthentication>
+  a earl:TestCase ;
+  rdfs:label "Basic authentication helper sets the Authorization header" ;
+  <#request> [
+    a tuner:Request ;
+    tuner:url <http://localhost:1080/headers-echo> ;
+    tuner:method "GET" ;
+    tuner:basicAuth ( "admin" "foobar" ) ;
+  ] ;
+  tuner:formula {
+    <#basicAuthentication> <#request> ?req .
+    ?req tuner:response ?res  .
+
+    ?res tuner:header ( "Authorization" "Basic YWRtaW46Zm9vYmFy" ) .
+  }
+.
