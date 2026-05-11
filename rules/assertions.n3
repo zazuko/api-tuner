@@ -114,7 +114,24 @@ prefix file: <http://www.w3.org/2000/10/swap/file#>
 {
   ?res tuner:header ( ?name ?value ?builtIn ) .
 } <= {
+  ?name log:rawType log:Literal .
   ?name string:lowerCase ?nameLower .
+
+  (
+    {
+      ?res log:notIncludes {
+        [] a tuner:Response ;
+        tuner:headers [
+          tuner:name ?nameLower ;
+        ] .
+      } .
+    }
+    {
+      ("Expected header '" ?name "' but it was not present in the response")!string:concatenation^tuner:info .
+      true log:equalTo false .
+    }
+    true
+  ) log:ifThenElseIn [] .
 
   ?res log:includes {
     [] a tuner:Response ;

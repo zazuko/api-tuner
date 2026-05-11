@@ -188,6 +188,18 @@ Query parameters can be added to a request using `tuner:query`.
 ?req tuner:query ( "name" "value" ) .
 ```
 
+#### Basic Authentication
+
+Use `tuner:basicAuth` to add HTTP Basic Authentication to a request. It takes a list of `( username password )` and automatically sets the `Authorization: Basic ...` header.
+
+```turtle
+<#test> tuner:request [
+  a tuner:Request ;
+  tuner:url <http://example.com/api> ;
+  tuner:basicAuth ( "admin" "secret" ) ;
+] .
+```
+
 #### Shell Variables
 
 Values used in request URL, headers and query params are resolved from the shell environment.

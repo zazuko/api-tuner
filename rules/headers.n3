@@ -1,8 +1,25 @@
+PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 prefix tuner: <https://api-tuner.described.at/>
 prefix string: <http://www.w3.org/2000/10/swap/string#>
 
+tuner:header a tuner:HeaderRule ; tuner:headerArgsRule <#defaultHeader> .
+
 {
-  (?fieldName ?fieldValue) tuner:headerArg ?curlArg .
+  (?fieldName ?fieldValue) <#defaultHeader> ?curlArg .
 } <= {
   ( ' -H "' ?fieldName ":" ?fieldValue '"' ) string:concatenation ?curlArg .
+} .
+
+####
+
+tuner:basicAuth a tuner:HeaderRule ; tuner:headerArgsRule <#basicAuth> .
+
+{
+  ( ?user ?password ) <#basicAuth> ?curlArgs .
+} <= {
+  ( ?user ":" ?password ) string:concatenation ?credentials .
+
+  ( "node -e 'console.log(Buffer.from(\"" ?credentials "\").toString(\"base64\"))'" )!string:concatenation log:shell ?encoded .
+
+  ( "Authorization" ("Basic " (?encoded "\n$" "")!string:replace)!string:concatenation ) <#defaultHeader> ?curlArgs .
 } .
