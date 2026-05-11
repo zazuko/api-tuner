@@ -56,7 +56,7 @@ prefix earl: <http://www.w3.org/ns/earl#>
     (
       { ?req tuner:body ?body  }
       { ?body </#body> ( ?bodyArgs ?requestBodyFile ) }
-      { ?bodyArgs log:equalTo "" }
+      { ?req </#formUrlencoded> ?bodyArgs }
     ) log:ifThenElseIn [] .
 
     (

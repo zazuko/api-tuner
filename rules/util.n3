@@ -1,0 +1,10 @@
+PREFIX log: <http://www.w3.org/2000/10/swap/log#>
+prefix string: <http://www.w3.org/2000/10/swap/string#>
+
+{
+  ?command log:shellTrimmed ?output .
+} <= {
+  ?command log:shell ?outputRaw .
+  # Remove trailing newline that is usually present in shell output
+  ( ?outputRaw "\n$" "" ) string:replace ?output  .
+} .
