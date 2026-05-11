@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.6.3
+
+### Patch Changes
+
+- 311111c: Using `tuner:form` on request directly to send `application/x-www-form-urlencoded` payload
+
 ## 0.6.2
 
 ### Patch Changes
