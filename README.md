@@ -172,7 +172,19 @@ Example:
     ```turtle
     tuner:body <file:data.json>
     ```
-3.  **Multipart Form**:
+3.  **URL-Encoded Form** (`application/x-www-form-urlencoded`): Use `tuner:form` directly on the `tuner:Request` object with `( name value )` pairs. Values are percent-encoded automatically.
+    ```turtle
+    <#test> tuner:request [
+      a tuner:Request ;
+      tuner:method "POST" ;
+      tuner:url <http://example.com/api> ;
+      tuner:form ( "foo" "hello world" ) ;
+      tuner:form ( "bar" "Ü" ) ;
+    ] .
+    ```
+    This sends `foo=hello%20world&bar=%C3%9C` as the request body.
+
+4.  **Multipart Form** (`multipart/form-data`): Use `tuner:body` with a blank node containing `tuner:form` triples. Each field is a `( name value )` pair. For file uploads, use a `file:` URI and optionally a MIME type as a third element.
     ```turtle
     tuner:body [
       tuner:form ( "field1" "value1" ) ;
