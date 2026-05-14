@@ -1,0 +1,15 @@
+prefix : <https://api-tuner.described.at/test#delete/>
+PREFIX earl: <http://www.w3.org/ns/earl#>
+PREFIX tuner: <https://api-tuner.described.at/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX resource: <https://api-tuner.described.at/resource#>
+
+<#delete-shortand>
+  a earl:TestCase ;
+  rdfs:label "DELETE request" ;
+  tuner:formula {
+    ( <http://localhost:1080/delete> ?res ) resource:deleteIn [] .
+
+    ?res tuner:http_code 204 .
+  } ;
+.

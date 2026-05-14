@@ -154,6 +154,7 @@ The `resource:` namespace provides shortcuts for common HTTP methods. These help
 - `( <url> ?body ?res ) resource:postIn []`
 - `( <url> ?res ) resource:postIn []` (no body)
 - `( <url> ?body ?res ) resource:putIn []`
+- `( <url> ?res ) resource:deleteIn []`
 
 Example:
 ```turtle

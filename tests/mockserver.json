@@ -86,5 +86,14 @@
     "times": {
       "remainingTimes": 1
     }
+  },
+  {
+    "httpRequest": {
+      "method": "DELETE",
+      "path": "/delete"
+    },
+    "httpResponse": {
+      "statusCode": 204
+    }
   }
 ]
