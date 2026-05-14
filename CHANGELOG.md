@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.6.4
+
+### Patch Changes
+
+- d6a7bcb: Shorthand for `DELETE` method
+
 ## 0.6.3
 
 ### Patch Changes
