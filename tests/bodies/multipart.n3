@@ -6,7 +6,7 @@ PREFIX log: <http://www.w3.org/2000/10/swap/log#>
 PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
 <#fields>
-  #a earl:TestCase ;
+  a earl:TestCase ;
   rdfs:label "Multipart form upload - mixed fields" ;
   tuner:request [
     a tuner:Request ;
@@ -34,8 +34,8 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 .
 
 <#fileWithMediaType>
- # a earl:TestCase ;
-  rdfs:label "Multipart form upload - file with medaia type" ;
+  a earl:TestCase ;
+  rdfs:label "Multipart form upload - file with media type" ;
   tuner:request [
     a tuner:Request ;
     tuner:url <http://localhost:1080/body-multipart> ;
@@ -59,7 +59,7 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
 
 <#fieldsRequestOnce>
   a earl:TestCase ;
-  rdfs:label "Multipart form upload - file with medaia type" ;
+  rdfs:label "Multipart form upload - file with media type" ;
   tuner:request [
     a tuner:Request ;
     tuner:url <http://localhost:1080/body-only-once> ;
