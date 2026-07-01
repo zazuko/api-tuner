@@ -1,5 +1,12 @@
 # api-tuner
 
+## 0.6.5
+
+### Patch Changes
+
+- 5b8f2ac: Updated `tar` to 7.5.16
+- 9cb6217: Added `--grep` option which filters test cases by `rdfs:label` or their URI if no label is present
+
 ## 0.6.4
 
 ### Patch Changes
