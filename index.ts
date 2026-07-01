@@ -1,12 +1,12 @@
 import * as url from 'node:url'
 import * as childProcess from 'node:child_process'
 import { PassThrough, Readable } from 'node:stream'
-import { resolve, dirname } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { program } from 'commander'
 import getStream from 'get-stream'
 import mergeStreams from '@sindresorhus/merge-streams'
 import rdf from '@zazuko/env-node'
-import packageJson from './package.json' with { type: 'json' }
+import packageJson from './package.json' with {type: 'json'}
 import parseTestCase from './lib/parse-test-case.js'
 import summariseResults from './lib/summarise-results.js'
 
@@ -20,6 +20,7 @@ program
   .option('--silent', 'Less output', false)
   .option('--debug', 'Enable debug output', false)
   .option('--raw', 'Output raw results from eyes')
+  .option('--grep <pattern>', 'Only run tests matching the given pattern')
   .requiredOption('--base-iri <baseIri>', 'Specify the base IRI for parsing the test case files')
   .option('--version', 'Show version information')
   .argument('[paths...]', 'Paths to test files')
@@ -101,13 +102,15 @@ async function processPath(path: string) {
 }
 
 function tunerParams({ path }: { path: string }): Readable {
-  const rdfString = rdf.clownface()
+  const graph = rdf.clownface()
     .blankNode()
     .addOut(tuner.scriptPath, dirname(resolve(path)))
-    .dataset
-    .toCanonical()
 
-  return Readable.from(rdfString)
+  if (options.grep) {
+    graph.addOut(tuner.grep, options.grep)
+  }
+
+  return Readable.from(graph.dataset.toCanonical())
 }
 
 const testSuites = program.args.map(async (path) => {
@@ -122,9 +125,17 @@ const testSuites = program.args.map(async (path) => {
 
   const validationResult = await summariseResults(summaryPassThrough)
 
+  if (validationResult.allTestsSkipped) {
+    return {
+      success: true,
+      summary: `⏳  SKIP   <file://${absolutePath}>`,
+    }
+  }
+
   if (options.raw) {
-    const header = options.silent ? '' : `\n⚡️ SUITE   <file://${absolutePath}>\n`
+    const header = options.silent ? '' : `\n⚡️ SUITE  <file://${absolutePath}>\n`
     process.stdout.write(header + await getStream(rawPassThrough))
+    process.stderr.write(header + await getStream(result.stderr))
   }
 
   if (!result.success) {
@@ -142,7 +153,7 @@ const testSuites = program.args.map(async (path) => {
     })
   }
 
-  summary += validationResult.summary
+  summary += validationResult.summary + '\n'
 
   return {
     summary,

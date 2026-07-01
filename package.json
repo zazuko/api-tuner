@@ -36,7 +36,6 @@
     "is-absolute-url": "^4.0.1",
     "jsonld": "^9",
     "jsonpath-plus": "^10.2.0",
-    "rdf-validate-shacl": "^0.6.5",
     "replacestream": "^4.0.3",
     "tar": "^7.5.16"
   },

@@ -43,6 +43,7 @@ Options:
   --silent           Less output
   --debug            Enable debug output
   --raw              Output raw results from eye
+  --grep <pattern>   Only run tests whose name or IRI matches the pattern (case-insensitive)
   --base-iri <iri>   Specify the base IRI for parsing the test case files
   --version          Show version information
   --help             Show this help message
@@ -85,6 +86,26 @@ Execute the test case:
 
 ```sh
 api-tuner test.n3
+```
+
+### Filter tests with --grep
+
+Use the `--grep` option to only run tests whose label or identifier matches a pattern.
+
+- Matching is case-insensitive
+- The pattern is checked against, in order:
+  - `rdfs:label` of the test case (if present)
+  - Otherwise the test case IRI (its URI form)
+- Tests that do not match the pattern are skipped and reported as skipped in the summary
+
+Examples:
+
+```sh
+# Run only tests whose label/IRI contains "login"
+api-tuner --grep "login" tests/**/*.n3
+
+# Run tests matching a more specific phrase
+api-tuner --grep "Simple GET" test.n3
 ```
 
 ## More examples
