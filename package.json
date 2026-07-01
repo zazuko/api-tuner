@@ -38,7 +38,7 @@
     "jsonpath-plus": "^10.2.0",
     "rdf-validate-shacl": "^0.6.5",
     "replacestream": "^4.0.3",
-    "tar": "^7.5.7"
+    "tar": "^7.5.16"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
