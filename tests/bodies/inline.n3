@@ -15,16 +15,13 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
     tuner:body {
       ex:foo ex:bar "baz" .
     } ;
-  ]
+  ] ;
+  tuner:formula {
+    <#inlineRdfBodyTestCase>!tuner:request tuner:response ?res .
+
+    ?res tuner:http_code 200 .
+    ?res!tuner:body log:includes {
+      ex:foo ex:bar "baz" .
+    } .
+  } ;
 .
-
-{
-  <#inlineRdfBodyTestCase>!tuner:request tuner:response ?res .
-
-  ?res tuner:http_code 200 .
-  ?res!tuner:body log:includes {
-    ex:foo ex:bar "baz" .
-  } .
-} => {
-  <#inlineRdfBodyTestCase> earl:outcome earl:passed .
-} .

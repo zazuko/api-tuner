@@ -14,16 +14,13 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
     tuner:method "POST" ;
     tuner:body <file:foobar.ttl> ;
     tuner:header ( "Content-Type" "text/turtle" ) ;
-  ]
+  ] ;
+  tuner:formula {
+    <#fileRdfBodyTestCase>!tuner:request tuner:response ?res .
+
+    ?res tuner:http_code 200 .
+    ?res!tuner:body log:includes {
+      ex:foo ex:bar "baz" .
+    } .
+  } ;
 .
-
-{
-  <#fileRdfBodyTestCase>!tuner:request tuner:response ?res .
-
-  ?res tuner:http_code 200 .
-  ?res!tuner:body log:includes {
-    ex:foo ex:bar "baz" .
-  } .
-} => {
-  <#fileRdfBodyTestCase> earl:outcome earl:passed .
-} .
