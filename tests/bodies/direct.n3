@@ -16,10 +16,12 @@ PREFIX string: <http://www.w3.org/2000/10/swap/string#>
     tuner:header ( "Content-Type" "text/turtle" ) ;
   ] ;
   tuner:formula {
-    <#fileRdfBodyTestCase>!tuner:request tuner:response ?res .
+    <#fileRdfBodyTestCase> tuner:request ?req .
+    ?req tuner:response ?res .
 
     ?res tuner:http_code 200 .
-    ?res!tuner:body log:includes {
+    ?res tuner:body ?body .
+    ?body log:includes {
       ex:foo ex:bar "baz" .
     } .
   } ;
