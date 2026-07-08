@@ -6,10 +6,21 @@ prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix string: <http://www.w3.org/2000/10/swap/string#>
 
 {
-  ?test a earl:TestCase ; tuner:formula ?formula .
+  {
+    ?test a earl:TestCase ; tuner:formula ?formula .
+  } log:callWithOptional {
+    ?test rdfs:label ?text .
+  } .
 
-  # Choose text to match against: prefer rdfs:label, otherwise the term's URI form
-  { ?test rdfs:label ?text . } log:callWithOptional { ?test log:uri ?text . } .
+  (
+    {
+      ?text log:bound false
+    }
+    {
+      ?test log:uri ?text .
+    }
+    true
+  ) log:ifThenElseIn [] .
 
   (
     {
