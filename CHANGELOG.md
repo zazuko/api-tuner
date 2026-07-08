@@ -1,5 +1,11 @@
 # api-tuner
 
+## 0.6.6
+
+### Patch Changes
+
+- 079525c: Tests without `rdfs:label` would be incorrectly skipped
+
 ## 0.6.5
 
 ### Patch Changes
