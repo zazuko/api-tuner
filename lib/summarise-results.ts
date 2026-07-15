@@ -1,4 +1,5 @@
 import type { Readable } from 'node:stream'
+import type { DatasetCore } from '@rdfjs/types'
 import rdf from '@zazuko/env-node'
 
 interface Result {
@@ -8,9 +9,18 @@ interface Result {
 }
 
 export default async (resultStream: Readable): Promise<Result> => {
-  const data = await rdf.dataset().import(rdf.formats.parsers.import('text/n3', resultStream, {
-    format: 'n3',
-  })!)
+  let data: DatasetCore
+  try {
+    data = await rdf.dataset().import(rdf.formats.parsers.import('text/n3', resultStream, {
+      format: 'n3',
+    })!)
+  } catch (e: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+    return {
+      success: false,
+      summary: `Failed to parse result stream: ${e.message}`,
+      allTestsSkipped: false,
+    }
+  }
 
   const testCases = rdf.clownface({ dataset: data })
     .has(rdf.ns.rdf.type, rdf.ns.earl.TestCase)
