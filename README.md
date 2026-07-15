@@ -322,6 +322,28 @@ Example:
 - `?path file:rm ?any`: Deletes a file.
 - `?relative file:libPath ?absolute`: Resolves a path relative to the `api-tuner` library.
 
+#### Executing Shell Commands
+
+Use `tuner:exec` to execute a shell command during a test. The command runs in the directory of the current test file (resolved via `tuner:scriptPath`). The subject of the triple is ignored — you can use `[]` or use shorthand.
+
+```turtle
+# Run a command in the test file's directory
+[] tuner:exec "npm run build" .
+
+# Chain multiple commands using normal shell syntax
+[] tuner:exec "npm ci && npm test" .
+
+# Environment variables are expanded by the shell
+[] tuner:exec "curl -s $BASE_URL/health" .
+
+# Shorthand usage
+"npm run build"^tuner:exec .
+```
+
+Notes:
+- This rule is intended for setup/teardown steps inside your test logic.
+- Output is not captured by `tuner:exec`. If you need to read command output inside rules, consider using `log:shell`/`log:shellTrimmed` with a string literal command instead.
+
 ### Debugging
 
 Setting the `--debug` flag will print verbose response information. The `--raw` flag will print
