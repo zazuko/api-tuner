@@ -1,5 +1,12 @@
 # api-tuner
 
+## 0.6.7
+
+### Patch Changes
+
+- bea1f17: When the result stream fails to parse, do not mark suite as skipped
+- a737137: Added `tuner:exec` to easily run a command in the directory of the test suite
+
 ## 0.6.6
 
 ### Patch Changes
