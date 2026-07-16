@@ -15,6 +15,15 @@ jobs:
       - run: npm run prepack
   tests:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        runMode:
+          - name: concurrent
+            flags: ''
+          - name: sequential
+            flags: --sequential
+    name: tests (mode=${{ matrix.runMode.name }})
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,7 +33,8 @@ jobs:
       - run: npm ci
       - run: docker compose up -d
       - run: npx wait-on http-get://localhost:1080/example.com
-      - run: npm test -- --silent
+      - name: Run tests
+        run: npm test -- --silent ${{ matrix.runMode.flags }}
         shell: bash
       - run: if [[ `git status --porcelain` ]]; then git status --porcelain && exit 1; fi
   lint:
