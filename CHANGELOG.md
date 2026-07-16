@@ -1,5 +1,12 @@
 # api-tuner
 
+## 0.6.8
+
+### Patch Changes
+
+- f2eba93: Added `--sequential` flag so that tests are not executed concurrently
+- f2eba93: Write output of tests as they are completed without wating for all to finish
+
 ## 0.6.7
 
 ### Patch Changes
