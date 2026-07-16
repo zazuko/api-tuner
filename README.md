@@ -6,6 +6,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Example](#example)
+- [Run modes](#run-modes)
 - [Documentation](#documentation)
   - [Namespaces](#namespaces)
   - [Defining a Test Case](#defining-a-test-case)
@@ -42,7 +43,8 @@ Options:
   --lib <path>       Specify rules to include in all tests. Can be used multiple times. Make sure to surround globs in quotes to prevent expansion.
   --silent           Less output
   --debug            Enable debug output
-  --raw              Output raw results from eye
+  --sequential       Run test suites sequentially instead of concurrently
+  --raw              Output raw results from eyes
   --grep <pattern>   Only run tests whose name or IRI matches the pattern (case-insensitive)
   --base-iri <iri>   Specify the base IRI for parsing the test case files
   --version          Show version information
@@ -106,6 +108,25 @@ api-tuner --grep "login" tests/**/*.n3
 
 # Run tests matching a more specific phrase
 api-tuner --grep "Simple GET" test.n3
+```
+
+## Run modes
+
+By default, API Tun3r runs multiple test suites concurrently for faster feedback. Add `--sequential` flag to run suites one by one in the given order.
+
+Notes and recommendations:
+
+- Write tests to be independent and free of shared mutable state (e.g., unique test data, isolated resources). Independent tests enable safe parallel execution and faster CI times.
+- If your suites currently depend on ordering or shared state, use `--sequential` as a temporary measure while refactoring toward independence.
+
+Examples:
+
+```sh
+# Default (concurrent)
+api-tuner --base-iri http://localhost:1080/ tests/**/*.n3
+
+# Force sequential execution
+api-tuner --base-iri http://localhost:1080/ --sequential tests/**/*.n3
 ```
 
 ## More examples

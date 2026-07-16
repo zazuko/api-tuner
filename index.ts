@@ -19,6 +19,7 @@ program
   .option('--lib <lib>', 'Specify rules to include in all tests. Can be used multiple times. Make sure to surround globs in quotes to prevent expansion.', (lib, arr: string[]) => [...arr, lib], [])
   .option('--silent', 'Less output', false)
   .option('--debug', 'Enable debug output', false)
+  .option('--sequential', 'Run test suites sequentially instead of concurrently', false)
   .option('--raw', 'Output raw results from eyes')
   .option('--grep <pattern>', 'Only run tests matching the given pattern')
   .requiredOption('--base-iri <baseIri>', 'Specify the base IRI for parsing the test case files')
@@ -60,6 +61,16 @@ const levelIcon = {
   DEBUG: '🐞',
   'Failed assertion': '❌ Failed assertion',
 } as const
+
+function writeSummary(summary: string) {
+  if (options.raw) return
+  const out = summary.endsWith('\n') ? summary : summary + '\n'
+  process.stdout.write(out)
+}
+
+function suiteHeader(absolutePath: string) {
+  return `\n🔎 SUITE   <file://${absolutePath}>\n`
+}
 
 interface EyeProcessResult {
   stdout: Readable
@@ -113,7 +124,7 @@ function tunerParams({ path }: { path: string }): Readable {
   return Readable.from(graph.dataset.toCanonical())
 }
 
-const testSuites = program.args.map(async (path) => {
+async function runSuite(path: string) {
   const absolutePath = resolve(process.cwd(), path)
 
   const result = await processPath(path)
@@ -126,10 +137,9 @@ const testSuites = program.args.map(async (path) => {
   const validationResult = await summariseResults(summaryPassThrough)
 
   if (validationResult.allTestsSkipped) {
-    return {
-      success: true,
-      summary: `⏳  SKIP   <file://${absolutePath}>`,
-    }
+    const summary = `⏳  SKIP   <file://${absolutePath}>`
+    writeSummary(summary)
+    return true
   }
 
   if (options.raw) {
@@ -139,13 +149,12 @@ const testSuites = program.args.map(async (path) => {
   }
 
   if (!result.success) {
-    return {
-      summary: `\n🔎 SUITE   <file://${absolutePath}>\n❌  FAIL   Test script failed`,
-      success: false,
-    }
+    const summary = `${suiteHeader(absolutePath)}❌  FAIL   Test script failed`
+    writeSummary(summary)
+    return false
   }
 
-  let summary = `\n🔎 SUITE   <file://${absolutePath}>\n`
+  let summary = suiteHeader(absolutePath)
   if (!validationResult.success || !options.silent) {
     const stderr = await getStream(result.stderr)
     summary += stderr.replace(/"([^"]*)" TRACE ("([^"]*)")?/gm, (_, level: keyof typeof levelIcon, quoted, text) => {
@@ -154,18 +163,28 @@ const testSuites = program.args.map(async (path) => {
   }
 
   summary += validationResult.summary + '\n'
+  writeSummary(summary)
+  return validationResult.success
+}
 
-  return {
-    summary,
-    success: validationResult.success,
-  }
-})
+async function runAllSuites() {
+  let results: boolean[] = []
 
-Promise.all(testSuites).then((results) => {
-  const summary = results.map(result => result.summary).join('\n')
-  if (!options.raw) {
-    process.stdout.write(summary + '\n')
+  if (options.sequential) {
+    for (const path of program.args as string[]) {
+      // Run each suite one by one
+      // Raw output (if enabled) is already streamed inside runSuite
+      const ok = await runSuite(path)
+      results.push(ok)
+    }
+  } else {
+    results = await Promise.all((program.args as string[]).map(runSuite))
   }
+
+  // Summaries are written directly by runSuite (unless --raw),
+  // so nothing else to print here.
   // exit code equals number of failed tests
-  process.exit(results.filter(result => !result.success).length)
-})
+  process.exit(results.filter(success => !success).length)
+}
+
+runAllSuites()
